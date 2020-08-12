@@ -85,7 +85,7 @@ const Home = () => {
             }
             // Then uses promise.all to wait for them to resolve
             const p = await Promise.all(newArr)
-            if(p.some(p => p == undefined)){
+            if(p.some(p => p === undefined)){
                 setError(true)
             }else{
                 setError(false)
@@ -118,7 +118,6 @@ const Home = () => {
              observer.observe(loader.current)
          }
     },[])
-    console.log(error)
     return(
         <Box className={classes.root}>
             <Box className={classes.bodyContainer}>
