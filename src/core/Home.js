@@ -54,7 +54,7 @@ const Home = () => {
     const loader = React.useRef(null)
     const [check,setCheck] = React.useState(false)
     const [cancelFetch,setCancelFetch] = React.useState(false)
-    
+    const [error,setError] = React.useState(true)
 
     // This is for getting a single post from json placholder
     const callFetch = (idx) => {
@@ -62,6 +62,7 @@ const Home = () => {
         .then(response => response.json())
         .catch(err => console.log(err))
     }
+
 
     // This is the handler function passed to the observer for when the element enters viewport
     const handleObserver = (entity) => {
@@ -84,10 +85,15 @@ const Home = () => {
             }
             // Then uses promise.all to wait for them to resolve
             const p = await Promise.all(newArr)
-            const newPost = post.concat(p)
-            setPost(newPost)
-            if(post.length >= 99 ){
-                setCancelFetch(true)
+            if(p.some(p => p == undefined)){
+                setError(true)
+            }else{
+                setError(false)
+                const newPost = post.concat(p)
+                setPost(newPost)
+                if(post.length >= 99 ){
+                    setCancelFetch(true)
+                }
             }
         }
         getPost()
@@ -112,11 +118,12 @@ const Home = () => {
              observer.observe(loader.current)
          }
     },[])
+    console.log(error)
     return(
         <Box className={classes.root}>
             <Box className={classes.bodyContainer}>
                 <h2>Flowless</h2>
-                {post.map((post,idx) => (
+                { error ? <h1>Something went wrong </h1> : post.map((post,idx) => (
                     <Box key={idx} className={classes.container}>
                         <em>{post.title}</em> <br/> <strong>{post.body}</strong>
                     </Box>
@@ -124,12 +131,11 @@ const Home = () => {
                 {/* This is the observer element we make it
                  dissappear when the post has reached it limit */}
                 {!cancelFetch &&
-
                  <Box className={classes.container}
                 style={{backgroundColor:"red"}}
                 // This is the ref that was passed to it to make it accessible to the intersection observer
                  ref={loader}>
-                     Loading New Post
+                    {error ? "Perhaps Error with Network" : "Loading New Post"}
                 </Box>}
             </Box>
         </Box>
