@@ -22,13 +22,18 @@ const useStyles = makeStyles(theme => ({
         alignItems:"center",
         overflowY:"auto",
         position:"relative",
-        overflowX:"hidden"
+        borderRadius:"3em 0 0 3em",
+        boxShadow:"24px 24px 5px 5px rgba(0,0,0,.5)",
+        overflowX:"hidden",
+        padding:"0 2em"
     },
     container:{
         backgroundColor:"white",
         margin:".5em 0",
         height:"30%",
         width:"100%",
+        borderRadius:".3em",
+        padding:"0 1em",
         alignItems:"center",
         textAlign:"center",
         border:"1px solid black"
@@ -42,19 +47,23 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const Home = ( ) => {
+const Home = () => {
     const classes = useStyles()
-    const[post,setPost] = React.useState([])
+    const [post,setPost] = React.useState([])
+    // This holds the ref for the oberserver element
     const loader = React.useRef(null)
-    const [ check,setCheck] = React.useState(false)
+    const [check,setCheck] = React.useState(false)
     const [cancelFetch,setCancelFetch] = React.useState(false)
     
+
+    // This is for getting a single post from json placholder
     const callFetch = (idx) => {
         return fetch(`https://jsonplaceholder.typicode.com/posts/${idx}`)
         .then(response => response.json())
         .catch(err => console.log(err))
     }
 
+    // This is the handler function passed to the observer for when the element enters viewport
     const handleObserver = (entity) => {
         const target = entity[0]
         if(target.isIntersecting){
@@ -66,29 +75,32 @@ const Home = ( ) => {
         }
     }
 
+    // This get all 10 post together
     React.useEffect(() => {
-        const createPost  = async () => {
+        const getPost  = async () => {
             let newArr = [];
             for(var i = 1;i < 10;i++){
                 newArr.push(callFetch(i+post.length))
             }
+            // Then uses promise.all to wait for them to resolve
             const p = await Promise.all(newArr)
-            console.log(p)
             const newPost = post.concat(p)
             setPost(newPost)
             if(post.length >= 99 ){
                 setCancelFetch(true)
             }
         }
-        createPost()
+        getPost()
     },[check])
 
+    // For testing when the post is about to reach the limit of 100
     React.useEffect(() => {
         if(post.length >= 99){
             setCancelFetch(true)
         }
     },[post])
 
+    // For setting the observer on component mount
     React.useEffect(() => {
         const options = {
              root:null,
@@ -100,18 +112,22 @@ const Home = ( ) => {
              observer.observe(loader.current)
          }
     },[])
-    // console.log(post)
     return(
         <Box className={classes.root}>
             <Box className={classes.bodyContainer}>
-                {post?.map((post,idx) => (
+                <h2>Flowless</h2>
+                {post.map((post,idx) => (
                     <Box key={idx} className={classes.container}>
                         <em>{post.title}</em> <br/> <strong>{post.body}</strong>
                     </Box>
                 ))}
+                {/* This is the observer element we make it
+                 dissappear when the post has reached it limit */}
                 {!cancelFetch &&
+
                  <Box className={classes.container}
                 style={{backgroundColor:"red"}}
+                // This is the ref that was passed to it to make it accessible to the intersection observer
                  ref={loader}>
                      Loading New Post
                 </Box>}
