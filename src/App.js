@@ -10,7 +10,7 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={theme} >
-        <Home/>
+        <MainRouter/>
       </ThemeProvider>
     </Router>    
     );
