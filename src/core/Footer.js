@@ -63,12 +63,12 @@ const Footer = () => {
                     </Box>
                 <Box style={{width:"60%"}}>
                     <Box className={classes.startContainer}>
-                        <Link>
+                        <Link to ="/">
                         <Typography variant="button">
                             Get Started
                         </Typography>
                         </Link>
-                        <Link>
+                        <Link to ="/">
                         <Typography variant="button">
                             Subscribe
                         </Typography>
@@ -78,27 +78,27 @@ const Footer = () => {
                         </Typography>
                     </Box>
                     <Box className={classes.aboutContainer}>
-                        <Link>
+                        <Link to ="/">
                             <Typography variant="button">
                                 About Campus Magazine
                             </Typography>
                         </Link>
-                        <Link>
+                        <Link to ="/">
                             <Typography variant="button">
                                 Write
                             </Typography>
                         </Link>
-                        <Link>
+                        <Link to ="/">
                             <Typography variant="button">
                                 Gift
                             </Typography>
                         </Link>
-                        <Link>
+                        <Link to ="/">
                             <Typography variant="button">
                                 Help
                             </Typography>
                         </Link>
-                        <Link>
+                        <Link to ="/">
                             <Typography variant="button">
                                 Press Contact
                             </Typography>

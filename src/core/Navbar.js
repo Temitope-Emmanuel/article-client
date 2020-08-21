@@ -1,11 +1,12 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import {Link} from  "react-router-dom";
-import {Toolbar,Button,Box} from '@material-ui/core';
+import {Toolbar,Button} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import {green} from "@material-ui/core/colors"
+import Login from "../auth/login"
 import {NavImg1} from "../asset"
 import FacebookIcon from "@material-ui/icons/Facebook"
 import TwitterIcon from "@material-ui/icons/Twitter"
@@ -93,6 +94,7 @@ const useStyles = makeStyles((theme) => ({
   button:{
     backgroundColor:"rgba(0,0,0,.7)",
     transition:"all .5s linear",
+    color:"white",
     "&:hover":{
       backgroundColor:"rgba(0,0,0,1)"
     }
@@ -139,6 +141,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar (){
   const classes = useStyles();
+  const [isOpen,setIsOpen] = React.useState(false)
+  
+  const handleToggle = () => {
+    console.log(isOpen)
+    setIsOpen(!isOpen)
+  }
+  const handleClose = () => {
+    setIsOpen(false)
+  }
 
   return (
     <div className={classes.root}>
@@ -171,9 +182,11 @@ export default function Navbar (){
                 Sign in
               </Typography>
             </Link>
-            <Button className={classes.button}>
-              <Link to="/login">Get started</Link>
+            <Button onClick={handleToggle} className={classes.button}>
+              Get started
             </Button>
+            <Login open={isOpen} handleToggle={handleToggle}
+             handleClose={handleClose} />
           </div>
         </Toolbar>
       </AppBar>
