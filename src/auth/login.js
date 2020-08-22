@@ -70,9 +70,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const AllOption = ({classes,handleToggle,handleSignUp,...props}) => {
+const AllOption = ({classes,handleToggle,handleOption,slide,...props}) => {
+
+    
     return(
-        <>
+        <Slide direction="left" in={slide}>
+        <DialogContent className={classes.root}>
           <DialogContentText style={{textAlign:"center"}}  id="alert-dialog-slide-description">
           Create an account to receive great stories in <br/>
            your inbox, personalize your homepage, and <br/>
@@ -82,34 +85,36 @@ const AllOption = ({classes,handleToggle,handleSignUp,...props}) => {
               <Button>
                   <AppleIcon/>
                   <Typography caption="button">
-                      Sign up with Apple
+                      Register with Apple
                   </Typography>
               </Button>
               <Button>
                   <FacebookIcon/>
                   <Typography caption="button">
-                      Sign up with Facebook
+                      Register with Facebook
                   </Typography>
               </Button>
-              <Button onClick={handleSignUp}>
+              <Button onClick={() => handleOption()}>
                   <MailIcon/>
                   <Typography caption="button">
-                      Sign up with Email
+                      Register with Email
                   </Typography>
               </Button>
               <Typography>
-                  Already have an account? <Link to="/login">Sign in</Link>
+                  Already have an account? <Link onClick={() => handleOption(false)} to="/login">login here</Link>
               </Typography>
           </Box>
-        </>
+        </DialogContent>
+        </Slide>
     )
 }
-const SignUpForm = ({classes,handleToggle,...props}) => {
+const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
     return(
-        <>
+        <Slide direction="right" in={!slide}>
+            <DialogContent className={classes.root}>
             <DialogContentText style={{textAlign:"center"}}
               id="alert-dialog-slide-description">
-                Enter your email address to create an account
+                  {register ? "Enter your email address to create an account" : "Input your email to login"}
             </DialogContentText>
             <Box className={classes.buttonContainer}>
             <TextField required id="Input Email"
@@ -120,19 +125,26 @@ const SignUpForm = ({classes,handleToggle,...props}) => {
                 margin="dense" label="Enter Your Email Address"/>
                 <Button style={{backgroundColor:"black",color:"whitesmoke"}}>Continue</Button> 
             </Box>
-        </>
+            </DialogContent>
+        </Slide>
     )
 }
 
 const Login = ({open,handleToggle,...props}) => {
     const classes = useStyles()
-    const [signUp,setSignUp] = React.useState(true)
-    const handleSignUp = () => {
-        setSignUp(!signUp)
+    const [options,setOptions] = React.useState(true)
+    const [register,setRegister] = React.useState(true)
+    const handleRegister = (val) => {
+        setRegister(val)
+    }
+    const handleOptions = (val = true) => {
+        setOptions(!options)
+        handleRegister(val)
+        console.log(`this is the register value ${register}`)
     }
  
     return (
-      <Dialog
+      <Dialog 
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -145,19 +157,17 @@ const Login = ({open,handleToggle,...props}) => {
       >
           <DialogTitle id="alert-dialog-slide-title"
             className={classes.title}>
-            {signUp ? "Join Campus Magazine" : "Sign up with email"}
+            {options ? "Join Campus Magazine" : register ? "Register with Email" : "Login with Email"}
           </DialogTitle>
         
-           <DialogContent className={classes.root}>
-                { signUp ? <AllOption handleSignUp={handleSignUp}
+                { options ? <AllOption slide={options} handleOption={handleOptions}
                  handleToggle={handleToggle}
                 classes={classes} /> :
-                <SignUpForm classes={classes} />
+                <LoginForm slide={options} register={register} classes={classes} />
                 }
-           </DialogContent>
            <DialogActions className={classes.actionContainer}>
                {
-                   signUp ?
+                   options ?
                    <>
                 <Button onClick={handleToggle} color="primary">
                     Disagree
@@ -167,9 +177,9 @@ const Login = ({open,handleToggle,...props}) => {
                 </Button>
                 </>
                  :
-                <Button onClick={handleSignUp} >
+                <Button onClick={() => handleOptions()} >
                     <ArrowIcon/>
-                    All sign up options
+                    All signin options
                 </Button>
                }
             </DialogActions>
