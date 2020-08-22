@@ -6,12 +6,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {Link} from "react-router-dom"
-import {Slide,Box,Typography,TextField} from '@material-ui/core';
+import {Slide,Box,Typography,TextField, IconButton} from '@material-ui/core';
 import {makeStyles} from "@material-ui/core/styles"
 import AppleIcon from '@material-ui/icons/Apple';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import MailIcon from '@material-ui/icons/MailOutline';
 import ArrowIcon from '@material-ui/icons/ArrowBackIosOutlined';
+import {create} from "./api-user"
+import {login} from "./api-auth"
+import inputState from "../hook/inputState"
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 
 const useStyles = makeStyles(theme => ({
     title:{
@@ -63,6 +70,16 @@ const useStyles = makeStyles(theme => ({
         justifyContent:"center",
         alignItems:"center",
         margin:theme.spacing(2,0)
+    },
+    inputContainer:{
+        padding:theme.spacing(.5,1),
+        "& > div":{
+            margin:"18px 0 !important"
+        }
+    },
+    button:{
+        fontSize:"1.1em",
+        padding:".4em 1em"
     }
 }))
 
@@ -71,8 +88,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const AllOption = ({classes,handleToggle,handleOption,slide,...props}) => {
-
-    
     return(
         <Slide direction="left" in={slide}>
         <DialogContent className={classes.root}>
@@ -108,7 +123,47 @@ const AllOption = ({classes,handleToggle,handleOption,slide,...props}) => {
         </Slide>
     )
 }
+
 const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
+    const [email,setEmail,resetEmail] = inputState("")
+    const [username,setUsername,resetUsername] = inputState("")
+    const [password,setPassword,resetPassword] = inputState("")
+    const [visible,setVisible] = React.useState(false)
+    const [submit,setSubmit] = React.useState(true)
+    const [isSubmitting,setIsSubmitting] = React.useState(false)
+
+    React.useEffect(() => {
+        const isSubmit = isValid()
+        setSubmit(!isSubmit)
+    },[email,password,username])
+    
+    const isValid = () => {
+        return [email,password,username].every(i => i.length > 4)
+    }
+    const handleVisible = () => {
+        setVisible(!visible)
+    }
+    const resetInput = () => {
+        resetPassword()
+        resetEmail()
+        resetUsername()
+    }
+    
+    const handleSubmit = () => {
+        setIsSubmitting(true)
+        const payload = {
+            username,
+            password,
+            email
+        }
+        const response = register ? create(payload) : login(payload)
+        response.then((data => console.log(data)))
+        resetInput()
+        setIsSubmitting(false)
+    }
+
+    console.log(email,password)
+
     return(
         <Slide direction="right" in={!slide}>
             <DialogContent className={classes.root}>
@@ -117,13 +172,40 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
                   {register ? "Enter your email address to create an account" : "Input your email to login"}
             </DialogContentText>
             <Box className={classes.buttonContainer}>
-            <TextField required id="Input Email"
-                style={{margin:"3em 0"}} fullWidth
-                inputProps={{
-                    placeholder:"Input your email"
-                }}
-                margin="dense" label="Enter Your Email Address"/>
-                <Button style={{backgroundColor:"black",color:"whitesmoke"}}>Continue</Button> 
+                <Box className={classes.inputContainer}>
+                    <TextField required id="Input Username"
+                        value={username}
+                        onChange={setUsername}
+                        style={{margin:"3em 0"}} fullWidth
+                        margin="dense" label="Enter Your Username"
+                    />
+                    <TextField required id="Input Email"
+                        value={email}
+                        onChange={setEmail}
+                        style={{margin:"3em 0"}} fullWidth
+                        margin="dense" label="Enter Your Email Address"
+                    />
+                    <TextField required id="Input Your Email"
+                        value={password}
+                        onChange={setPassword}
+                        style={{margin:"3em 0"}} fullWidth
+                        type={visible ? 'text':'password'}
+                        InputProps={{
+                            endAdornment:
+                            <InputAdornment position="end" >
+                                <IconButton onClick={handleVisible} >
+                                    {visible ? <Visibility/> : <VisibilityOff/>}
+                                </IconButton>
+                            </InputAdornment>
+                        }}
+                        margin="dense" label="Enter Your Password"
+                    />
+                </Box>
+            <Button disabled={submit || isSubmitting} className={classes.button}
+             onClick = {handleSubmit}
+             style={{backgroundColor:"black",color:"whitesmoke"}}>
+                        {submit ? "Fill email & password" : "Submit"}
+                </Button> 
             </Box>
             </DialogContent>
         </Slide>
@@ -132,15 +214,14 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
 
 const Login = ({open,handleToggle,...props}) => {
     const classes = useStyles()
-    const [options,setOptions] = React.useState(true)
-    const [register,setRegister] = React.useState(true)
+    const [options,setOptions] = React.useState(false)
+    const [register,setRegister] = React.useState(false)
     const handleRegister = (val) => {
         setRegister(val)
     }
     const handleOptions = (val = true) => {
         setOptions(!options)
         handleRegister(val)
-        console.log(`this is the register value ${register}`)
     }
  
     return (
