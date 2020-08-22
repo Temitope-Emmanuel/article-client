@@ -131,6 +131,7 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
     const [visible,setVisible] = React.useState(false)
     const [submit,setSubmit] = React.useState(true)
     const [isSubmitting,setIsSubmitting] = React.useState(false)
+    const [error,setError] = React.useState("")
 
     React.useEffect(() => {
         const isSubmit = isValid()
@@ -157,13 +158,19 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
             email
         }
         const response = register ? create(payload) : login(payload)
-        response.then((data => console.log(data)))
+        response.then(res => res.json())
+                .then(data => {
+                    if(data.error){
+                        setError(data.error)
+                    }else{
+                        console.log("this is the successful data",data)
+                    }
+                })
         resetInput()
         setIsSubmitting(false)
     }
-
-    console.log(email,password)
-
+    console.log(error)
+    
     return(
         <Slide direction="right" in={!slide}>
             <DialogContent className={classes.root}>
@@ -203,8 +210,8 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
                 </Box>
             <Button disabled={submit || isSubmitting} className={classes.button}
              onClick = {handleSubmit}
-             style={{backgroundColor:"black",color:"whitesmoke"}}>
-                        {submit ? "Fill email & password" : "Submit"}
+             style={{backgroundColor:errror.length > 2 ? "black" : "red",color:"whitesmoke"}}>
+                        {error.length > 2 ? error : submit ? "Fill email & password" : "Submit"}
                 </Button> 
             </Box>
             </DialogContent>
@@ -215,7 +222,7 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
 const Login = ({open,handleToggle,...props}) => {
     const classes = useStyles()
     const [options,setOptions] = React.useState(false)
-    const [register,setRegister] = React.useState(false)
+    const [register,setRegister] = React.useState(true)
     const handleRegister = (val) => {
         setRegister(val)
     }
