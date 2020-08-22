@@ -126,7 +126,7 @@ const AllOption = ({classes,handleToggle,handleOption,slide,...props}) => {
 
 const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
     const [email,setEmail,resetEmail] = inputState("")
-    const [username,setUsername,resetUsername] = inputState("")
+    const [username,setUsername,resetUsername] = inputState("topeojo")
     const [password,setPassword,resetPassword] = inputState("")
     const [visible,setVisible] = React.useState(false)
     const [submit,setSubmit] = React.useState(true)
@@ -136,6 +136,7 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
     React.useEffect(() => {
         const isSubmit = isValid()
         setSubmit(!isSubmit)
+        setError("")
     },[email,password,username])
     
     const isValid = () => {
@@ -163,16 +164,16 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
                     if(data.error){
                         setError(data.error)
                     }else{
+                        handleToggle()
                         console.log("this is the successful data",data)
                     }
                 })
         resetInput()
         setIsSubmitting(false)
     }
-    console.log(error)
     
     return(
-        <Slide direction="right" in={!slide}>
+        <Slide direction="left" in={!slide}>
             <DialogContent className={classes.root}>
             <DialogContentText style={{textAlign:"center"}}
               id="alert-dialog-slide-description">
@@ -180,12 +181,13 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
             </DialogContentText>
             <Box className={classes.buttonContainer}>
                 <Box className={classes.inputContainer}>
+                    {register &&
                     <TextField required id="Input Username"
                         value={username}
                         onChange={setUsername}
                         style={{margin:"3em 0"}} fullWidth
                         margin="dense" label="Enter Your Username"
-                    />
+                    />}
                     <TextField required id="Input Email"
                         value={email}
                         onChange={setEmail}
@@ -210,7 +212,7 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
                 </Box>
             <Button disabled={submit || isSubmitting} className={classes.button}
              onClick = {handleSubmit}
-             style={{backgroundColor:errror.length > 2 ? "black" : "red",color:"whitesmoke"}}>
+             style={{backgroundColor:error.length < 2 ? "black" : "red",color:"whitesmoke"}}>
                         {error.length > 2 ? error : submit ? "Fill email & password" : "Submit"}
                 </Button> 
             </Box>
@@ -221,7 +223,7 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
 
 const Login = ({open,handleToggle,...props}) => {
     const classes = useStyles()
-    const [options,setOptions] = React.useState(false)
+    const [options,setOptions] = React.useState(true)
     const [register,setRegister] = React.useState(true)
     const handleRegister = (val) => {
         setRegister(val)
@@ -248,10 +250,9 @@ const Login = ({open,handleToggle,...props}) => {
             {options ? "Join Campus Magazine" : register ? "Register with Email" : "Login with Email"}
           </DialogTitle>
         
-                { options ? <AllOption slide={options} handleOption={handleOptions}
-                 handleToggle={handleToggle}
-                classes={classes} /> :
-                <LoginForm slide={options} register={register} classes={classes} />
+                { options ? <AllOption slide={options} classes={classes}
+                 handleOption={handleOptions}/> :
+                <LoginForm handleToggle={handleToggle} slide={options} register={register} classes={classes} />
                 }
            <DialogActions className={classes.actionContainer}>
                {

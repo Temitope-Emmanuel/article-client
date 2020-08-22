@@ -142,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar (){
   const classes = useStyles();
-  const [isOpen,setIsOpen] = React.useState(true)
+  const [isOpen,setIsOpen] = React.useState(false)
   
   const handleToggle = () => {
     console.log(isOpen)
@@ -186,8 +186,7 @@ export default function Navbar (){
             <Button onClick={handleToggle} className={classes.button}>
               Get started
             </Button>
-            <Login open={isOpen} handleToggle={handleToggle}
-             handleClose={handleClose} />
+            <Login open={isOpen} handleToggle={handleToggle}/>
           </div>
         </Toolbar>
       </AppBar>
