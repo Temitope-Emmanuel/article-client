@@ -1,15 +1,17 @@
 import React from "react"
 import {Route,Switch,Redirect} from "react-router-dom"
-// import {PrivatRoute} from "./auth/PrivateRoute"
+import PrivateRoute from "./auth/PrivateRoute"
 import Home from "./core/Home"
 import Login from "./auth/login"
+import CreateArticle from "./article/createArticle"
 
 
 const MainRouter = () => (
     <Switch>
-        <Route path="/" component={Home} />
         <Route path="/login" component={Login} />
-        <Route  component={() => <Redirect to="/" />} /> 
+        <PrivateRoute exact path="/article/create" component={CreateArticle} />
+        <Route path="/" component={Home} />
+        {/* <Route component={() => <Redirect to="/" />} />  */}
     </Switch>
 )
 

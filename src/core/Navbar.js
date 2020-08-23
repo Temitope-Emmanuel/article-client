@@ -1,16 +1,20 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import {Link} from  "react-router-dom";
-import {Toolbar,Button} from '@material-ui/core';
+import {Toolbar,Button,Avatar} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {green} from "@material-ui/core/colors"
 import Login from "../auth/login"
 import {NavImg1} from "../asset"
 import FacebookIcon from "@material-ui/icons/Facebook"
+import SearchIcon from '@material-ui/icons/Search';
+import BookmarksOutlinedIcon from '@material-ui/icons/BookmarksOutlined';
+import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined';
 import TwitterIcon from "@material-ui/icons/Twitter"
 import InstagramIcon from "@material-ui/icons/Instagram"
+import {isAuthenticated} from "../auth/auth-helper"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -140,17 +144,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Navbar (){
+export default function Navbar ({handleMessage,...props}){
   const classes = useStyles();
   const [isOpen,setIsOpen] = React.useState(false)
   
   const handleToggle = () => {
-    console.log(isOpen)
     setIsOpen(!isOpen)
   }
-  const handleClose = () => {
-    setIsOpen(false)
-  }
+  const jwt = isAuthenticated()
 
   return (
     <div className={classes.root}>
@@ -168,6 +169,9 @@ export default function Navbar (){
             <img src={NavImg1} style={{width:"100%"}} />
           </IconButton>
           <div className={classes.search}>
+            {
+              !jwt ?
+              <>  
             <Link to="/" >
               <Typography variant="caption">
                 Subscribe
@@ -178,15 +182,44 @@ export default function Navbar (){
                 Write
               </Typography>
             </Link>
-            <Link to="/" >
-              <Typography variant="caption">
-                Sign in
-              </Typography>
-            </Link>
-            <Button onClick={handleToggle} className={classes.button}>
-              Get started
-            </Button>
-            <Login open={isOpen} handleToggle={handleToggle}/>
+                <Link onClick={handleToggle} >
+                  <Typography variant="caption">
+                    Sign in
+                  </Typography>
+                </Link>
+                <Button onClick={handleToggle} className={classes.button}>
+                  Get started
+                </Button>
+                <Login handleMessage={handleMessage} open={isOpen} handleToggle={handleToggle}/>
+              </>:
+              <>
+              <Link to="/article/create" >
+                <Typography variant="caption">
+                  Article
+                </Typography>
+              </Link>
+              <Link>
+                <IconButton>
+                  <SearchIcon/>
+                </IconButton>
+              </Link>
+              <Link>
+                <IconButton>
+                  <BookmarksOutlinedIcon/>
+                </IconButton>
+              </Link>
+              <Link>
+                <IconButton>
+                  <NotificationsOutlinedIcon/>
+                </IconButton>
+              </Link>
+              <Link>
+                <IconButton>
+                  <Avatar src={"https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"} />
+                </IconButton>
+              </Link>
+              </>
+            }
           </div>
         </Toolbar>
       </AppBar>

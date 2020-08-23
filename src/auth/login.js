@@ -18,7 +18,7 @@ import inputState from "../hook/inputState"
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import InputAdornment from '@material-ui/core/InputAdornment';
-
+import {authenticate} from "./auth-helper"
 
 const useStyles = makeStyles(theme => ({
     title:{
@@ -124,7 +124,7 @@ const AllOption = ({classes,handleToggle,handleOption,slide,...props}) => {
     )
 }
 
-const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
+const LoginForm = ({classes,handleToggle,slide,register,handleMessage,...props}) => {
     const [email,setEmail,resetEmail] = inputState("")
     const [username,setUsername,resetUsername] = inputState("topeojo")
     const [password,setPassword,resetPassword] = inputState("")
@@ -163,8 +163,20 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
                 .then(data => {
                     if(data.error){
                         setError(data.error)
+                        handleMessage({
+                            type:"error",
+                            message:data.error
+                        })
                     }else{
                         handleToggle()
+                        authenticate({
+                            token:data.token,
+                            user:data.user
+                        },
+                        handleMessage({
+                            type:"success",
+                            message:`${data.message || data.user.username}, Welcome to USM`
+                        }))    
                         console.log("this is the successful data",data)
                     }
                 })
@@ -221,7 +233,7 @@ const LoginForm = ({classes,handleToggle,slide,register,...props}) => {
     )
 }
 
-const Login = ({open,handleToggle,...props}) => {
+const Login = ({open,handleToggle,handleMessage,...props}) => {
     const classes = useStyles()
     const [options,setOptions] = React.useState(true)
     const [register,setRegister] = React.useState(true)
@@ -252,7 +264,7 @@ const Login = ({open,handleToggle,...props}) => {
         
                 { options ? <AllOption slide={options} classes={classes}
                  handleOption={handleOptions}/> :
-                <LoginForm handleToggle={handleToggle} slide={options} register={register} classes={classes} />
+                <LoginForm handleMessage={handleMessage} handleToggle={handleToggle} slide={options} register={register} classes={classes} />
                 }
            <DialogActions className={classes.actionContainer}>
                {
