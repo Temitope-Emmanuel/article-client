@@ -58,12 +58,13 @@ const ChipComponent = ({category,...props}) => {
 
   
   const handleClick = (e) => () => {
-    props.setCategory(e)
+    if(props.setCategory){
+      props.setCategory(e)
+    }
   };
 
   return (
     <>
-    {/* <Paper elevation={13} className={classes.root}> */}
       <Chip className={`${classes.chip} ${category == "Education" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="Education" onClick={handleClick("Education")} />
@@ -85,7 +86,6 @@ const ChipComponent = ({category,...props}) => {
       <Chip className={`${classes.chip} ${category == "Food" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="Food" onClick={handleClick("Food")} />
-    {/* </Paper> */}
     </>
   );
 }

@@ -70,7 +70,7 @@ const SimpleMenu = ({anchorEl,handleAlert,...props}) => {
                 <Typography variant="h6" >
                     {jwt.user.username}
                 </Typography>
-                <Typography variant="subtitle2" >
+                <Typography component="span" variant="subtitle2" >
                     {jwt.user.email}
                 </Typography>
             </Box>

@@ -17,6 +17,7 @@ import InstagramIcon from "@material-ui/icons/Instagram"
 import {isAuthenticated} from "../auth/auth-helper"
 import {AlertContext} from "../MainRouter"
 import Menu from "./Menu"
+import TagsTab from "./tagsTab"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -162,7 +163,8 @@ export default function Navbar ({handleMessage,...props}){
   const jwt = isAuthenticated()
   
   return (
-    <div className={classes.root}>
+    <>
+    {/* <div className={classes.root}> */}
       <AppBar elevation={0} className={classes.appBar} position="static">
         <Toolbar>
           <IconButton
@@ -180,12 +182,12 @@ export default function Navbar ({handleMessage,...props}){
             {
               !jwt ?
               <>  
-            <Link to="/" >
+            <Link onClick={handleToggle} to="/" >
               <Typography variant="caption">
                 Subscribe
               </Typography>
             </Link>
-            <Link to="/" >
+            <Link onClick={handleToggle} to="/" >
               <Typography variant="caption">
                 Write
               </Typography>
@@ -244,6 +246,8 @@ export default function Navbar ({handleMessage,...props}){
         <TwitterIcon/>
         <InstagramIcon/>
       </Toolbar>
-    </div>
+      {jwt && <TagsTab/>}
+      {/* </div> */}
+      </>
   );
 }
