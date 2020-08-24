@@ -28,14 +28,14 @@ const MainRouter = () =>{
 
 
     return(
-        <Switch>
-            <AlertContext.Provider value={{payload:alert,handleAlert:handleSnackbar,open:openSnackbar}} >
+        <AlertContext.Provider value={{payload:alert,handleAlert:handleSnackbar,open:openSnackbar}} >
+            <Switch>
                 <Route path="/login" component={Login} />
                 <PrivateRoute exact path="/article/create" component={CreateArticle} />
                 <Route path="/" component={Home} />
                 <Route component={() => <Redirect to="/" />} /> 
+            </Switch>
             </AlertContext.Provider>
-        </Switch>
     )
 } 
 

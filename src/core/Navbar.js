@@ -15,6 +15,8 @@ import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined'
 import TwitterIcon from "@material-ui/icons/Twitter"
 import InstagramIcon from "@material-ui/icons/Instagram"
 import {isAuthenticated} from "../auth/auth-helper"
+import {AlertContext} from "../MainRouter"
+import Menu from "./Menu"
 
 
 const useStyles = makeStyles((theme) => ({
@@ -147,13 +149,18 @@ const useStyles = makeStyles((theme) => ({
 export default function Navbar ({handleMessage,...props}){
   const classes = useStyles();
   const [isOpen,setIsOpen] = React.useState(false)
-  
+  const [anchorEl,setAnchorEl] = React.useState(null)
+
+
+  const handleEl = (e) => {
+    setAnchorEl(e.currentTarget)
+  }
+
   const handleToggle = () => {
     setIsOpen(!isOpen)
   }
   const jwt = isAuthenticated()
-  // const jwt = true
-
+  
   return (
     <div className={classes.root}>
       <AppBar elevation={0} className={classes.appBar} position="static">
@@ -214,10 +221,18 @@ export default function Navbar ({handleMessage,...props}){
                   <NotificationsOutlinedIcon/>
                 </IconButton>
               </Link>
+              <Button variant="outlined" >
+                Subscribe
+              </Button>
               <Link>
-                <IconButton>
-                  <Avatar src={"https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"} />
+              <AlertContext.Consumer>
+                {(context) => (
+                  <IconButton>
+                    <Menu handleAlert={context.handleAlert} anchorEl={anchorEl} />
+                    <Avatar onClick={handleEl} src={"https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"} />
                 </IconButton>
+                )}
+              </AlertContext.Consumer>
               </Link>
               </>
             }

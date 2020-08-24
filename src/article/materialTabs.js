@@ -115,14 +115,8 @@ export default function FullWidthTabs() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const [open,setOpen] = React.useState(true)
-  const [text,setText,resetText] = useInputState(`
-  # DatePicker
-   
-  The DatePicker works by supplying a date to bias towards,
-  as well as a default timezone.
-   
-  `)
+  const [open,setOpen] = React.useState(false)
+  const [text,setText,resetText] = useInputState("")
 
   const handleToggle = () => {
     setOpen(!open)

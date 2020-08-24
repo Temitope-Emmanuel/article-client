@@ -114,15 +114,15 @@ const ArticleDialog = ({open,handleToggle,article,handleAlert,...props}) => {
       title,
       tag:category
     }
-    createArticle(payload,{id:jwt.user.id,token:jwt.token})
-    .then(data =>{
+    createArticle(payload,{id:jwt.user._id || jwt.user.id,token:jwt.token})
+    .then(data => {
       if(data && data.error){
         setError(data.error)
         handleAlert({type:"error",message:data.error})
       }else{
         handleAlert({type:"success",message:"New Article successfully Created"})
       }
-    })
+    }).catch(err => console.log(err))
     setSubmitting(false)
   }
 
