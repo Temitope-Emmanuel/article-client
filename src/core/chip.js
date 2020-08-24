@@ -2,8 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import FaceIcon from '@material-ui/icons/Face';
-import DoneIcon from '@material-ui/icons/Done';
 import {Paper,Box} from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
@@ -49,45 +47,46 @@ const useStyles = makeStyles((theme) => ({
     marginRight:"auto",
     marginLeft: "9px",
     boxShadow:"0 0 3px 3px rgba(0,0,0,.5)"
+  },
+  active:{
+    boxShadow:"0px 0px 10px 5px black",
   }
 }));
 
-const ChipComponent = () => {
+const ChipComponent = ({category,...props}) => {
   const classes = useStyles();
 
-  const handleDelete = () => {
-    console.info('You clicked the delete icon.');
-  };
-
-  const handleClick = () => {
-    console.info('You clicked the Chip.');
+  
+  const handleClick = (e) => () => {
+    props.setCategory(e)
   };
 
   return (
-    <Paper elevation={13} className={classes.root}>
-      <Chip className={classes.chip} 
+    <>
+    {/* <Paper elevation={13} className={classes.root}> */}
+      <Chip className={`${classes.chip} ${category == "Education" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
-       label="Education" onClick={handleClick} />
-      <Chip className={classes.chip} 
+       label="Education" onClick={handleClick("Education")} />
+      <Chip className={`${classes.chip} ${category == "Science" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
-       label="Science" onClick={handleClick} />
-      <Chip className={classes.chip} 
+       label="Science" onClick={handleClick("Science")} />
+      <Chip className={`${classes.chip} ${category == "Relationships" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
-       label="Relationships" onClick={handleClick} />
-      <Chip className={classes.chip} 
+       label="Relationships" onClick={handleClick("Relationships")} />
+      <Chip className={`${classes.chip} ${category == "GEN" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
-       label="GEN" onClick={handleClick} />
-      <Chip className={classes.chip} 
+       label="GEN" onClick={handleClick("GEN")} />
+      <Chip className={`${classes.chip} ${category == "Business" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
-       label="Business" onClick={handleClick} />
-      <Chip className={classes.chip} 
+       label="Business" onClick={handleClick("Business")} />
+      <Chip className={`${classes.chip} ${category == "Technology" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
-       label="Technology" onClick={handleClick} />
-      <Chip className={classes.chip} 
+       label="Technology" onClick={handleClick("Technology")} />
+      <Chip className={`${classes.chip} ${category == "Food" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
-       label="Food" onClick={handleClick} />
-      
-    </Paper>
+       label="Food" onClick={handleClick("Food")} />
+    {/* </Paper> */}
+    </>
   );
 }
 

@@ -115,8 +115,15 @@ export default function FullWidthTabs() {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
-  const [open,setOpen] = React.useState(false)
-  const [text,setText,resetText] = useInputState("")
+  const [open,setOpen] = React.useState(true)
+  const [text,setText,resetText] = useInputState(`
+  # DatePicker
+   
+  The DatePicker works by supplying a date to bias towards,
+  as well as a default timezone.
+   
+  <DatePicker biasTowardDateTime="2017-12-05T07:39:36.091Z" timezone="UTC+5" />
+  `)
 
   const handleToggle = () => {
     setOpen(!open)
@@ -134,7 +141,7 @@ export default function FullWidthTabs() {
 
   return (
     <>
-    <ArticleDialog open={open} handleToggle={handleToggle} />
+    <ArticleDialog open={open} article={text} handleToggle={handleToggle} />
     <Paper elevation={5} className={classes.root}>
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}

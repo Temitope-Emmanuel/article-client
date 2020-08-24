@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 const SnackbarComponent = ({open,payload:{type,message},...props}) => {
   const classes = useStyles();
 

@@ -250,8 +250,8 @@ const Login = ({open,handleToggle,handleMessage,...props}) => {
         open={open}
         TransitionComponent={Transition}
         keepMounted
-        fullWidth={true}
         scroll={"paper"}
+        fullWidth={true}
         maxWidth={"md"}
         onClose={handleToggle}
         aria-labelledby="alert-dialog-slide-title"

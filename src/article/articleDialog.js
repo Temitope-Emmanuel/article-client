@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles,makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
@@ -8,6 +8,15 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
+import {TextField,Box} from "@material-ui/core"
+import BookmarksOutlinedIcon from '@material-ui/icons/BookmarksOutlined';
+import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import {isAuthenticated} from "../auth/auth-helper"
+import Markdown from "markdown-to-jsx"
+import useInputState from "../hook/inputState"
+import Chips from "../core/chip"
+import {createArticle} from "./api-article"
+import {AlertContext} from "../core/Home"
 
 const styles = (theme) => ({
   root: {
@@ -46,39 +55,123 @@ const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(1),
-  },
+    "& button":{
+      padding:theme.spacing(1,2.7),
+      "& svg":{
+        marginRight:".3em"
+      }
+    }
+  }
 }))(MuiDialogActions);
 
-const ArticleDialog = ({open,handleToggle,...props}) => {
-  
+const useStyles = makeStyles(theme => ({
+  root:{
+    "& > span":{
+      marginTop:theme.spacing(3),
+      fontSize:"1.2em"
+    }
+  },
+  chipContainer:{
+    display:"grid",
+    gridTemplateColumns:"1fr 1fr 1fr",
+    gridTemplateRows:"auto",
+    justifyItems:"center",
+    alignContent:"center",
+    flexDirection:"column",
+    minWidth:"60%",
+    marginBottom:"30px",
+    "div:last-child":{
+      margin:"auto !important",
+      justifySelf:"center"
+    }
+  },
+  bodyContainer:{
+    border:"2px solid rgba(0,0,0,.5)",
+    borderRadius:".5em",
+    marginBottom:theme.spacing(3),
+    padding:theme.spacing(3),
+    backgroundColor:"whitesmoke",
+    minHeight:"40vw",
+    overflowY:"auto"
+  }
+}))
+
+const ArticleDialog = ({open,handleToggle,article,...props}) => {
+  const [submitting,setSubmitting] = React.useState(false)
+
+  const [title,setTitle,resetTitle] = useInputState("")
+  const [category,setCategory] = React.useState("Food")
+  const [error,setError] = React.useState("")
+  const jwt = isAuthenticated()
+  const classes = useStyles()
+
+  const handleCategory = (e) => {
+    setCategory(e)
+  }
+  const handleSubmit = () => {
+    setSubmitting(true)
+    const payload = {
+      body:article,
+      title,
+      tag:category
+    }
+    createArticle(payload,{id:jwt.user.id,token:jwt.token})
+    .then(data =>{
+      if(data && data.error){
+        setError(data.error)
+      }else{
+
+      }
+    })
+    setSubmitting(false)
+  }
+
   return (
-    <div>
-      <Dialog onClose={handleToggle} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog disable fullWidth={"true"}
+        maxWidth={"md"} keepMounted
+        onClose={handleToggle} aria-labelledby="customized-dialog-title" open={open}>
         <DialogTitle id="customized-dialog-title" onClose={handleToggle}>
           Modal title
         </DialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis
-            in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis
-            lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel
-            scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus
-            auctor fringilla.
-          </Typography>
-        </DialogContent>
+        <DialogContent className={classes.root} dividers>
+          <TextField required id="title"
+            value={title}
+            onChange={setTitle}
+            style={{margin:"3em 0"}} fullWidth
+            margin="dense" label="Enter the title of the article"
+          />
+            <Typography style={{textAlign:"center"}} variant="h5" >
+              Please Select One Category
+            </Typography>
+            <Box className={classes.chipContainer}>
+              <Chips category={category} setCategory={handleCategory} />
+            </Box>
+              <Typography variant="caption" >
+                Created on {new Date().toLocaleString()}
+              </Typography>
+            <Box className={classes.bodyContainer}>
+              <Markdown>
+                {article}
+              </Markdown>
+            </Box>
+          </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleToggle} color="primary">
-            Save changes
+          <Button style={{
+            backgroundColor:"black"
+          }} onClick={handleToggle} color="primary">
+            <BookmarksOutlinedIcon/>
+            Stash
+          </Button>
+          <Button onClick={handleSubmit} 
+            disabled={title.length < 3 || submitting} style={{
+            backgroundColor:"#3f4771",
+            color:"black"
+          }}>
+          <SaveAltIcon/>
+            { title.length < 3 ? "Please Fill in title Name" : submitting ? "Creating New Article" : "Submit"}
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
   );
 }
 

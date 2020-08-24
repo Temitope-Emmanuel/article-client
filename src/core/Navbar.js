@@ -152,6 +152,7 @@ export default function Navbar ({handleMessage,...props}){
     setIsOpen(!isOpen)
   }
   const jwt = isAuthenticated()
+  // const jwt = true
 
   return (
     <div className={classes.root}>

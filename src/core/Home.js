@@ -1,6 +1,6 @@
 import React from "react"
 import {makeStyles} from "@material-ui/core/styles"
-import {Container,Typography,Button,Box} from "@material-ui/core"
+import {Container,Typography,Button,Box,Paper} from "@material-ui/core"
 import Navbar from "./Navbar"
 import Footer from "./Footer"
 import Chip from "./chip"
@@ -27,8 +27,23 @@ const useStyles = makeStyles(theme => ({
       fontSize:"1.3em",
       fontWeight:300
     }
+  },
+  chipContainer:{
+      display: 'flex',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      padding:theme.spacing(2,0),
+      margin:theme.spacing(5,2),
+      borderRadius:"5em .3em 5em .3em",
+      border:"2px solid rgba(255,255,255,.8)",
+      width:"70vw"
   }
 }))
+
+export const AlertContext = React.createContext({
+  payload:{}
+})
+
 
 
 
@@ -51,7 +66,12 @@ const Home = () => {
   return (
     <Box style={{overflowX:"hidden"}}>
       <Navbar handleMessage={handleSnackbar} />
+      <AlertContext.Provider value={{
+        payload:alert,
+        handleSnackbar:handleSnackbar
+      }} >
       <Snackbar open={openSnackbar} payload={alert} />
+      </AlertContext.Provider>
       <Container className={classes.root}>
         <Typography variant="h2" >
           Dive deeper on topics that matter to you
@@ -59,7 +79,9 @@ const Home = () => {
         <Typography component="span" variant="caption" >
           Select what you're into. we'll help ypu find great things
         </Typography>
-        <Chip/>
+        <Paper elevation={13} className={classes.chipContainer}>
+          <Chip/>
+        </Paper>
         <Button style={{
           backgroundColor:"black",
           color:"white",
