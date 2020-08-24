@@ -14,6 +14,7 @@ import CreateIcon from '@material-ui/icons/Create';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import {blueGrey,deepPurple} from "@material-ui/core/colors"
 import ArticleDialog from "./articleDialog"
+import {AlertContext} from "../MainRouter"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -34,7 +35,6 @@ function TabPanel(props) {
     </div>
   );
 }
-
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
@@ -122,7 +122,6 @@ export default function FullWidthTabs() {
   The DatePicker works by supplying a date to bias towards,
   as well as a default timezone.
    
-  <DatePicker biasTowardDateTime="2017-12-05T07:39:36.091Z" timezone="UTC+5" />
   `)
 
   const handleToggle = () => {
@@ -141,7 +140,11 @@ export default function FullWidthTabs() {
 
   return (
     <>
-    <ArticleDialog open={open} article={text} handleToggle={handleToggle} />
+    <AlertContext.Consumer>
+      {(context) => (
+        <ArticleDialog open={open} handleAlert={context.handleAlert} article={text} handleToggle={handleToggle} />
+      )}
+    </AlertContext.Consumer>
     <Paper elevation={5} className={classes.root}>
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}

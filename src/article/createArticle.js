@@ -4,7 +4,6 @@ import {makeStyles} from "@material-ui/core/styles"
 import {Container,Box,Typography,TextField,Button,Slide} from "@material-ui/core"
 import {isAuthenticated} from "../auth/auth-helper"
 import Navbar from "../core/Navbar"
-// import Tabs from "./Tabs"
 import Tabs from "./materialTabs"
 import useInputState from "../hook/inputState"
 

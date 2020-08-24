@@ -16,7 +16,6 @@ import Markdown from "markdown-to-jsx"
 import useInputState from "../hook/inputState"
 import Chips from "../core/chip"
 import {createArticle} from "./api-article"
-import {AlertContext} from "../core/Home"
 
 const styles = (theme) => ({
   root: {
@@ -96,7 +95,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ArticleDialog = ({open,handleToggle,article,...props}) => {
+const ArticleDialog = ({open,handleToggle,article,handleAlert,...props}) => {
   const [submitting,setSubmitting] = React.useState(false)
 
   const [title,setTitle,resetTitle] = useInputState("")
@@ -119,8 +118,9 @@ const ArticleDialog = ({open,handleToggle,article,...props}) => {
     .then(data =>{
       if(data && data.error){
         setError(data.error)
+        handleAlert({type:"error",message:data.error})
       }else{
-
+        handleAlert({type:"success",message:"New Article successfully Created"})
       }
     })
     setSubmitting(false)

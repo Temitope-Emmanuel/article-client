@@ -5,6 +5,7 @@ import Navbar from "./Navbar"
 import Footer from "./Footer"
 import Chip from "./chip"
 import Snackbar from "./snackbar"
+import {AlertContext} from "../MainRouter"
 
 const useStyles = makeStyles(theme => ({
   root:{
@@ -40,38 +41,22 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export const AlertContext = React.createContext({
-  payload:{}
-})
-
 
 
 
 const Home = () => {
   const classes = useStyles()
-  const [openSnackbar,setOpenSnackbar] = React.useState(false)
-  const [alert,setAlert] = React.useState({
-    type:"success",
-    message:"Login Successful"
-  })
-
-  const handleSnackbar = (payload) => {
-    setOpenSnackbar(true)
-    setAlert(payload)
-    setTimeout(() => {
-      setOpenSnackbar(false)
-    },2000)
-  }
-
+  
   return (
     <Box style={{overflowX:"hidden"}}>
-      <Navbar handleMessage={handleSnackbar} />
-      <AlertContext.Provider value={{
-        payload:alert,
-        handleSnackbar:handleSnackbar
-      }} >
-      <Snackbar open={openSnackbar} payload={alert} />
-      </AlertContext.Provider>
+      <AlertContext.Consumer>
+        {(context) => (
+          <>
+        <Navbar handleMessage={context.handleAlert} />
+        <Snackbar open={context.open} payload={context.payload} />
+        </>
+        )}
+      </AlertContext.Consumer>
       <Container className={classes.root}>
         <Typography variant="h2" >
           Dive deeper on topics that matter to you
