@@ -4,6 +4,7 @@ import PrivateRoute from "./auth/PrivateRoute"
 import Home from "./core/Home"
 import Login from "./auth/login"
 import CreateArticle from "./article/createArticle"
+import Snackbar from "./core/snackbar"
 
 export const AlertContext = React.createContext({
     payload:{},
@@ -29,6 +30,11 @@ const MainRouter = () =>{
 
     return(
         <AlertContext.Provider value={{payload:alert,handleAlert:handleSnackbar,open:openSnackbar}} >
+            <AlertContext.Consumer>
+                {(context) => (
+                    <Snackbar open={openSnackbar} payload={context.payload} />
+                )}
+            </AlertContext.Consumer>
             <Switch>
                 <Route path="/login" component={Login} />
                 <PrivateRoute exact path="/article/create" component={CreateArticle} />

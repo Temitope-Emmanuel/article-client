@@ -1,11 +1,11 @@
 import React from "react"
-import Markdown from "markdown-to-jsx"
 import {makeStyles} from "@material-ui/core/styles"
+import {Redirect} from "react-router-dom"
 import {Container,Box,Typography,TextField,Button,Slide} from "@material-ui/core"
 import {isAuthenticated} from "../auth/auth-helper"
 import Navbar from "../core/Navbar"
 import Tabs from "./materialTabs"
-import useInputState from "../hook/inputState"
+
 
 const useStyles = makeStyles(theme => ({
     root:{
@@ -19,6 +19,10 @@ const useStyles = makeStyles(theme => ({
 
 const CreateArticle = () => {
     const classes = useStyles()
+    const jwt = isAuthenticated()
+    if(!jwt){
+        return <Redirect to="" />
+    }
     return(
         <>
             <Navbar/>

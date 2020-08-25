@@ -213,6 +213,7 @@ const ArticleDialog = ({open,handleToggle,article,handleAlert,...props}) => {
       createArticle(articleData,{id:jwt.user._id || jwt.user.id,token:jwt.token},false)
     .then(data => {
       setSubmitting(false)
+      handleToggle()
       console.log(data)
       if(data && data.error){
         handleAlert({type:"error",message:data.error})
