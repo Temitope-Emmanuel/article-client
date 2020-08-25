@@ -116,7 +116,7 @@ const AllOption = ({classes,handleToggle,handleOption,slide,...props}) => {
                   </Typography>
               </Button>
               <Typography>
-                  Already have an account? <Link onClick={() => handleOption(false)} to="/login">login here</Link>
+                  Already have an account? <Link onClick={() => handleOption(false)} to="/">login here</Link>
               </Typography>
           </Box>
         </DialogContent>
@@ -159,8 +159,10 @@ const LoginForm = ({classes,handleToggle,slide,register,handleMessage,...props})
             email
         }
         const response = register ? create(payload) : login(payload)
+        console.log("hitting the handle submit func",response)
         response.then(res => res.json())
                 .then(data => {
+                    console.log("this is the data",data)
                     if(data.error){
                         setError(data.error)
                         handleMessage({

@@ -106,8 +106,11 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     preview:{
-        width:"100%",
-        height:"90%"
+      width:"100%",
+      height:"90%",
+      "& > div":{
+        marginBottom:"30px"
+      }
     }
 }));
 
@@ -116,7 +119,7 @@ export default function FullWidthTabs() {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
   const [open,setOpen] = React.useState(false)
-  const [text,setText,resetText] = useInputState("")
+  const [text,setText,resetText] = useInputState(``)
 
   const handleToggle = () => {
     setOpen(!open)
@@ -148,9 +151,9 @@ export default function FullWidthTabs() {
         <TabPanel className={classes.tabContainer} value={value} index={0} dir={theme.direction}>
             <TextField required 
                 id="Input Text" label="Write markdown to create article"
-                value={text} multiline rows={10}
+                value={text} multiline rows={24}
                 onChange={handleText} variant="outlined"
-                style={{margin:"3em 0"}} fullWidth
+                style={{height:"100%"}} fullWidth
                 margin="dense"
             />
         </TabPanel>
@@ -158,7 +161,9 @@ export default function FullWidthTabs() {
             <Box className={classes.preview}>
                 <Markdown>{text}</Markdown>
             </Box>
-            <Button onClick={handleToggle} style={{backgroundColor:"black",color:blueGrey[500],marginTop:"auto"}} >Submit</Button>
+            <Button onClick={handleToggle} disabled={text.length < 30} style={
+              {backgroundColor:"black",color:blueGrey[500],
+              position:"fixed",bottom:"10px"}} >{text.length < 30 ? "Article is too short for publishing" : "Submit"}</Button>
         </TabPanel>
       </SwipeableViews>
         <AppBar position="relative" centered color="default">

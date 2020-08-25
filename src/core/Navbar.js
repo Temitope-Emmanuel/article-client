@@ -62,15 +62,11 @@ const useStyles = makeStyles((theme) => ({
       display:"flex",
       alignItems:"center",
       justifyContent:"center",
+      flexDirection:"column",
       color:"rgba(0,0,0,0.6)",
       width:"15%",
       height:"34px",
       cursor:"pointer",
-      "& > span":{
-        fontSize:"1.2em",
-        fontWeight:"500",
-        transition:"color .3s linear",
-        textDecoration:"none",
       "&::after":{
         content:"' '",
         display:"block",
@@ -83,9 +79,29 @@ const useStyles = makeStyles((theme) => ({
         color:"rgba(0,0,0,1)",
         "&::after":{
           height:"2.5px !important",
-          width: "100%",
+          width: "50%",
         }
-      }
+      },
+      "& > span":{
+        fontSize:"1.2em",
+        fontWeight:"500",
+        transition:"color .3s linear",
+        textDecoration:"none",
+          "&::after":{
+            content:"' '",
+            display:"block",
+            height:"2.5px !important",
+            width:"0%",
+            backgroundImage:`linear-gradient(to right,${green["A400"]},${green["A700"]})`,
+            transition:"0.35s ease-out all",
+          },
+          "&:hover":{
+            color:"rgba(0,0,0,1)",
+            "&::after":{
+              height:"2.5px !important",
+              width: "100%",
+            }
+          }
       }
     },
     "& span":{
@@ -182,16 +198,16 @@ export default function Navbar ({handleMessage,...props}){
             {
               !jwt ?
               <>  
-            <Link onClick={handleToggle} to="/" >
-              <Typography variant="caption">
-                Subscribe
-              </Typography>
-            </Link>
-            <Link onClick={handleToggle} to="/" >
-              <Typography variant="caption">
-                Write
-              </Typography>
-            </Link>
+                <Link onClick={handleToggle} to="/" >
+                  <Typography variant="caption">
+                    Subscribe
+                  </Typography>
+                </Link>
+                <Link onClick={handleToggle} to="/" >
+                  <Typography variant="caption">
+                    Write
+                  </Typography>
+                </Link>
                 <Link onClick={handleToggle} >
                   <Typography variant="caption">
                     Sign in
@@ -209,19 +225,25 @@ export default function Navbar ({handleMessage,...props}){
                 </Typography>
               </Link>
               <Link>
-                <IconButton>
-                  <SearchIcon/>
-                </IconButton>
+                {/* <IconButton> */}
+                <Typography>
+                    <SearchIcon/>
+                </Typography>
+                {/* </IconButton> */}
               </Link>
               <Link>
-                <IconButton>
-                  <BookmarksOutlinedIcon/>
-                </IconButton>
+                {/* <IconButton> */}
+                <Typography>
+                    <BookmarksOutlinedIcon/>
+                </Typography>
+                {/* </IconButton> */}
               </Link>
               <Link>
-                <IconButton>
-                  <NotificationsOutlinedIcon/>
-                </IconButton>
+                {/* <IconButton> */}
+                <Typography>
+                    <NotificationsOutlinedIcon/>
+                </Typography>
+                {/* </IconButton> */}
               </Link>
               <Button variant="outlined" >
                 Subscribe
@@ -229,10 +251,12 @@ export default function Navbar ({handleMessage,...props}){
               <Link>
               <AlertContext.Consumer>
                 {(context) => (
-                  <IconButton>
+                  <>
+                  {/* <IconButton> */}
                     <Menu handleAlert={context.handleAlert} anchorEl={anchorEl} />
                     <Avatar onClick={handleEl} src={"https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"} />
-                </IconButton>
+                {/* </IconButton> */}
+                </>
                 )}
               </AlertContext.Consumer>
               </Link>
