@@ -137,11 +137,8 @@ export default function FullWidthTabs() {
 
   return (
     <>
-    <AlertContext.Consumer>
-      {(context) => (
-        <ArticleDialog open={open} handleAlert={context.handleAlert} article={text} handleToggle={handleToggle} />
-      )}
-    </AlertContext.Consumer>
+    <ArticleDialog open={open}
+      article={text} handleToggle={handleToggle} />
     <Paper elevation={5} className={classes.root}>
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}

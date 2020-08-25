@@ -18,6 +18,8 @@ import useInputState from "../hook/inputState"
 import Chips from "../core/chip"
 import {createArticle} from "./api-article"
 import {green,deepPurple} from "@material-ui/core/colors"
+import AlertHOC from "../core/Consumer"
+
 
 const styles = (theme) => ({
   root: {
@@ -177,7 +179,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const ArticleDialog = ({open,handleToggle,article,handleAlert,...props}) => {
+const ArticleDialog = ({open,handleToggle,context,article,handleAlert,...props}) => {
   const [submitting,setSubmitting] = React.useState(false)
   const [urlImage,setUrlImage] = React.useState(true)
   const [imageInput,setImageInput] = React.useState(null)
@@ -216,9 +218,9 @@ const ArticleDialog = ({open,handleToggle,article,handleAlert,...props}) => {
       handleToggle()
       console.log(data)
       if(data && data.error){
-        handleAlert({type:"error",message:data.error})
+        context.handleAlert({type:"error",message:data.error})
       }else{
-        handleAlert({type:"success",message:"New Article successfully Created"})
+        context.handleAlert({type:"success",message:"New Article successfully Created"})
       }
     }).catch(err => console.log(err))
   }
@@ -298,4 +300,4 @@ const ArticleDialog = ({open,handleToggle,article,handleAlert,...props}) => {
   );
 }
 
-export default ArticleDialog
+export default AlertHOC(ArticleDialog)

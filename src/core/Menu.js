@@ -37,11 +37,11 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const SimpleMenu = ({anchorEl,handleAlert,...props}) => {
+const SimpleMenu = ({anchorEl,handleAlert,handleAnchor,...props}) => {
   const classes = useStyles()
   const jwt = isAuthenticated()
   const handleClose = () => {
-    console.log("okay")
+    handleAnchor({currentTarget:null})
   };
 
   const handleLogOut = () => {
@@ -50,6 +50,7 @@ const SimpleMenu = ({anchorEl,handleAlert,...props}) => {
           type:"success",
           message:"Successfully logout"
       })
+      handleClose()
   }
 
   return (

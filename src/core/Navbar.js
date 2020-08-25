@@ -1,6 +1,6 @@
 import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
-import {Link} from  "react-router-dom";
+import {Link,withRouter} from  "react-router-dom";
 import {Toolbar,Button,Avatar} from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -163,7 +163,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Navbar ({handleMessage,...props}){
+const Navbar = ({handleMessage,...props}) => {
   const classes = useStyles();
   const [isOpen,setIsOpen] = React.useState(false)
   const [anchorEl,setAnchorEl] = React.useState(null)
@@ -172,28 +172,26 @@ export default function Navbar ({handleMessage,...props}){
   const handleEl = (e) => {
     setAnchorEl(e.currentTarget)
   }
-
+  
   const handleToggle = () => {
     setIsOpen(!isOpen)
   }
   const jwt = isAuthenticated()
-  
+  const atHome = props.history.location.pathname == "/"
+  console.log(props,atHome)
   return (
     <>
     {/* <div className={classes.root}> */}
       <AppBar elevation={0} className={classes.appBar} position="static">
         <Toolbar>
-          <IconButton
+          <Link to="/"
             edge="start"
-            disableFocusRipple={true}
-            disableRipple={true}
-            disableTouchRipple={true}
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
           >
             <img src={NavImg1} style={{width:"100%"}} />
-          </IconButton>
+          </Link>
           <div className={classes.search}>
             {
               !jwt ?
@@ -225,26 +223,20 @@ export default function Navbar ({handleMessage,...props}){
                 </Typography>
               </Link>
               <Link>
-                {/* <IconButton> */}
-                <Typography>
+                  <Typography>
                     <SearchIcon/>
                 </Typography>
-                {/* </IconButton> */}
-              </Link>
+                </Link>
               <Link>
-                {/* <IconButton> */}
-                <Typography>
+                  <Typography>
                     <BookmarksOutlinedIcon/>
                 </Typography>
-                {/* </IconButton> */}
-              </Link>
+                </Link>
               <Link>
-                {/* <IconButton> */}
-                <Typography>
+                  <Typography>
                     <NotificationsOutlinedIcon/>
                 </Typography>
-                {/* </IconButton> */}
-              </Link>
+                </Link>
               <Button variant="outlined" >
                 Subscribe
               </Button>
@@ -253,7 +245,7 @@ export default function Navbar ({handleMessage,...props}){
                 {(context) => (
                   <>
                   {/* <IconButton> */}
-                    <Menu handleAlert={context.handleAlert} anchorEl={anchorEl} />
+                    <Menu handleAlert={context.handleAlert} handleAnchor={handleEl} anchorEl={anchorEl} />
                     <Avatar onClick={handleEl} src={"https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"} />
                 {/* </IconButton> */}
                 </>
@@ -270,8 +262,9 @@ export default function Navbar ({handleMessage,...props}){
         <TwitterIcon/>
         <InstagramIcon/>
       </Toolbar>
-      {jwt && <TagsTab/>}
-      {/* </div> */}
+      {atHome && jwt && <TagsTab/>}
       </>
   );
 }
+
+export default withRouter(Navbar)

@@ -13,6 +13,8 @@ import SideArticle from "../article/SideArticle"
 import GitHubIcon from '@material-ui/icons/GitHub';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
+import {getAllArticle} from "../article/api-article"
+import AlertHOC from "./Consumer"
 
 
 const useStyles = makeStyles(theme => ({
@@ -54,9 +56,24 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const Home = () => {
+const Home = (props) => {
   const classes = useStyles()
   const jwt = isAuthenticated()
+  const [article,setArticle] = React.useState([])
+
+
+  React.useEffect(() => {
+      const abortController = new AbortController()
+      const signal = abortController.signal
+      getAllArticle({limit:5,page:1},signal).then(data => {
+          if(data && data.error){
+
+          }
+      })
+      return function(){
+          abortController.abort()
+      }
+  },[])
 
   const mainFeaturedArticle = {
     title:"Title of a longer blog post",
@@ -128,18 +145,11 @@ const Home = () => {
     ],
   };
     
-
   return (
     <Box style={{overflowX:"hidden"}}>
-      <CssBaseline/>
-      <AlertContext.Consumer>
-        {(context) => (
-          <>
-        <Navbar handleMessage={context.handleAlert} />
-        <Snackbar open={context.open} payload={context.payload} />
-        </>
-        )}
-      </AlertContext.Consumer>
+        <CssBaseline/>
+        <Navbar handleMessage={props.context.handleAlert} />
+        <Snackbar open={props.context.open} payload={props.context.payload} />
       <Box className={classes.root}>
       {jwt ?
       <>
@@ -182,4 +192,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default AlertHOC(Home)

@@ -7,7 +7,7 @@ export const createArticle = (payload,user,format) => {
 
 export const getAllArticle = async (params,signal) => {
         try{
-                const response = await fetch('http:/localhost:3001/api/articles',{
+                const response = await fetch('http://localhost:3001/api/articles',{
                         method:"POST",
                         signal,
                         body:JSON.stringify(params)
