@@ -88,15 +88,32 @@ const useStyles = makeStyles((theme) => ({
 const TabContainer = () => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const [scrolling,setScrolling] = React.useState({
+    scrolling:false,
+    scrollTop:0
+  })
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  const onScroll = e => {
+    setScrolling(curSt => ({
+      scrollTop:e.target.documentElement.scrollTop,
+      scrolling:e.target.documentElement.scrollTop > scrolling.scrollTop
+    }))
+  }
+  React.useEffect(() => {
+    window.addEventListener('scroll',onScroll)
+    return function(){
+      window.removeEventListener('scroll',onScroll)
+    }
+  },[])
+  
   return (
       <>
     {/* <div className={classes.root}> */}
-      <AppBar elevation={0} style={{position:"sticky",top:0,backgroundColor:"transparent"}} position="sticky" color="default">
+      <AppBar elevation={0} 
+      style={{top:0,backgroundColor:scrolling.scrolling ? "black" : "transparent"}} position="sticky" color="default">
         <StyledTabs
             className={classes.tabContainer}
           value={value}

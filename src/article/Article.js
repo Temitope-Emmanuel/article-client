@@ -1,6 +1,6 @@
 import React from "react"
 import {makeStyles} from "@material-ui/core/styles"
-import {Box,Typography,Container,Avatar,Button} from "@material-ui/core"
+import {Box,Paper,Typography,Container,Avatar,Button} from "@material-ui/core"
 import {green} from "@material-ui/core/colors"
 import {readArticle} from "./api-article"
 import AlertHOC from "../core/Consumer"
@@ -18,6 +18,7 @@ import Reward from "react-rewards"
 const useStyles = makeStyles(theme => ({
     root:{
         padding:"0 2em",
+        marginBottom:"5em",
         "& > *":{
             display:"flex",
             justifyContent:"center",
@@ -110,54 +111,100 @@ const useStyles = makeStyles(theme => ({
                 width:"100%",
                 borderRadius:".5em"
             }
-        }
+        },
+        "& > div:nth-child(2)":{
+            backgroundColor:"rgba(0, 0, 0, 0.05)",
+            padding:"17px 10px",
+            bordeRadius: ".5em"
+            }
     },
     creditContainer:{
         display:"flex",
         justifyContent:"center",
         alignItems:"center",
         "& > div:nth-child(1)":{
-            width:"50%",
+            width:"70%",
             display:"inline-block"
         },
     },
     actionContainer:{
-        width:"50%",
         display:"inline-grid",
         gridTemplateColumns:"1fr 1fr",
         height:"100%",
-        "& > div:first-child":{
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            // flexDirection:"column",
-            "& svg":{
-                background:"rgba(0,0,0,.3)",
-                fontSize:"2em",
-                marginRight:".3em",
-                padding:".3em",
-                borderRadius:"50%",
-                boxShadow:"0 0 6px 3px rgba(0,0,0,.8)",
-                cursor:"pointer"
-            }
-        },
-        "& > div:nth-child(2)":{
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            "& svg":{
-                background:"rgba(0,0,0,.3)",
-                fontSize:"2em",
-                marginRight:".3em",
-                padding:".3em",
-                borderRadius:"50%",
-                boxShadow:"0 0 6px 3px rgba(0,0,0,.8)",
-                cursor:"pointer"
-            }
-        },
+        marginTop: "2.5em",
         "& > div:nth-child(3)":{
             width:"200%",
             margin:"2em 0"
+        }
+    },
+    action:{
+        display:"flex",
+        justifyContent:"center",
+        alignItems:"center",
+        "& svg":{
+            background:"rgba(0,0,0,.3)",
+            fontSize:"1.5em",
+            marginRight:".3em",
+            padding:".3em",
+            borderRadius:"50%",
+            boxShadow:"0 0 6px 3px rgba(0,0,0,.8)",
+            cursor:"pointer"
+        },
+        "& > span":{
+            fontSize: "1.3em",
+            marginLeft: ".7em",
+            fontWeight: 600
+        }
+    },
+    afterBodyContainer:{
+        margin:"0 2.5em",
+        padding:"0 1em",
+    },
+    userContainer:{
+        border:"1px rgba(0,0,0,.2)",
+        borderStyle:"solid none",
+        marginBottom:"1em",
+        padding:".5em"
+    },
+    userHolder:{
+        display:"flex",
+        flexDirection:"row",
+        alignitems:"center",
+        "& > div":{
+            display:"block",
+            padding:".5em"
+        },
+        "& > div:first-child":{
+            height:"5em",
+            width:"5em",
+            marginRight:".5em"
+        },
+        "& > div:nth-child(2)":{
+            display:"flex",
+            flexDirection:"column",
+            "& span:nth-child(1)":{
+                // color:"rgba(0,0,0,.6)",
+                opacity:".9",
+                fontWeight:"600",
+                letterSpacing:".05em",
+                fontSize:"1.1em",
+                marginBottom:"5px"
+            },
+            "& span:nth-child(2)":{
+                fontSize:"1.5em",
+                fontWeight:"600",
+                marginBottom:"15px"
+            },
+            "& span:nth-child(3)":{
+                width:"75%",
+                fontSize:"1.7em",
+                opacity:".7"
+            }
+        },
+        "& > button":{
+            height:"fit-content",
+            alignSelf:"center",
+            padding:".5em 2.5em"
         }
     }
 }))
@@ -193,7 +240,7 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
             abortController.abort()
         }
     },[articleId])
-    console.log(typeof article.body)
+    const description = `A Software Engineer turned writer. Udacity Full-stack Nanodegree Grad. Contributor to The Startup, Level Up Coding & Codeburst.io.`
     return(
         <Box className={classes.root}>
             <Container >
@@ -228,32 +275,35 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
                         <img src={article.imageLink} />
                     </Box>
                     <Box>
-                    <Markdown>
-                        {article.body ? article.body : ""}
-                    </Markdown>
+                        <Markdown>
+                            {article.body ? article.body : ""}
+                        </Markdown>
                     </Box>
                 </Box>
                 {
                     article.title &&
+                    <Paper elevation={3} className={classes.afterBodyContainer}>
                     <Box className={classes.creditContainer}>
                         <Box className={classes.chipContainer}>
                             <Chip/>
                         </Box>
                         <Box className={classes.actionContainer} >
                             <Box onClick={showAnimation} >
-                                <Reward
-                                    ref={(ref) => { buttonRef = ref }}
-                                    type='confetti'
-                                    >
-                                        <LikeIcon/>
-                                        <span>79 claps</span>
+                                <Reward type='confetti'
+                                    ref={(ref) => { buttonRef = ref }}>
+                                        <Box className={classes.action}>
+                                            <LikeIcon/>
+                                            <span >79 claps</span>
+                                        </Box>
                                 </Reward>
                             </Box>
                             <Box onClick={commentAnimation} >
-                                <Reward type="memphis"
+                                <Reward type="confetti"
                                     ref={ref => {commentRef = ref}}>
-                                    <CommentIcon/>
-                                    <span>2 response</span>
+                                    <Box className={classes.action}>
+                                        <CommentIcon/>
+                                        <span>2 response</span>
+                                    </Box>
                                 </Reward>
                             </Box>
                             <Box className={classes.socialContainer}>
@@ -264,6 +314,20 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
                             </Box>
                         </Box>
                     </Box>
+                    <Box className={classes.userContainer}>
+                        <Box className={classes.userHolder} >
+                            <Avatar variant="squared" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60" />
+                            <Box>
+                                <span>WRITTEN BY</span>
+                                <span>{article.author.username}</span>
+                                <span>{article.author.description || description }</span>
+                            </Box>
+                            <Button variant="outlined" >
+                                Follow
+                            </Button>
+                        </Box>
+                    </Box>
+                    </Paper>
                 }
             </Container>
         </Box>
