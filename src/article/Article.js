@@ -13,6 +13,7 @@ import StarIcon from '@material-ui/icons/Star';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import Markdown from "../config/Markdown"
 import Chip from "../core/chip"
+import Reward from "react-rewards"
 
 const useStyles = makeStyles(theme => ({
     root:{
@@ -130,7 +131,7 @@ const useStyles = makeStyles(theme => ({
             justifyContent:"center",
             alignItems:"center",
             // flexDirection:"column",
-            "& > svg":{
+            "& svg":{
                 background:"rgba(0,0,0,.3)",
                 fontSize:"2em",
                 marginRight:".3em",
@@ -144,7 +145,7 @@ const useStyles = makeStyles(theme => ({
             display:"flex",
             justifyContent:"center",
             alignItems:"center",
-            "& > svg":{
+            "& svg":{
                 background:"rgba(0,0,0,.3)",
                 fontSize:"2em",
                 marginRight:".3em",
@@ -165,6 +166,16 @@ const useStyles = makeStyles(theme => ({
 const Article = ({context,match:{params:{articleId}},...props}) => {
     const classes = useStyles()
     const [article,setArticle] = React.useState({})
+    let buttonRef = React.createRef()
+    let commentRef = React.createRef()
+    const showAnimation = () => {
+        buttonRef.rewardMe()
+        // buttonRef.punishMe()
+    }
+    const commentAnimation = () => {
+        commentRef.rewardMe()
+        // buttonRef.punishMe()
+    }
 
     React.useEffect(() => {
         const abortController = new AbortController()
@@ -212,7 +223,7 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
                         <LinkedInIcon/>
                     </Box>
                 </Box>
-                {/* <Box className={classes.articleContainer}>
+                <Box className={classes.articleContainer}>
                     <Box>
                         <img src={article.imageLink} />
                     </Box>
@@ -221,21 +232,29 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
                         {article.body ? article.body : ""}
                     </Markdown>
                     </Box>
-                </Box> */}
+                </Box>
                 {
-                    // article.title &&
+                    article.title &&
                     <Box className={classes.creditContainer}>
                         <Box className={classes.chipContainer}>
                             <Chip/>
                         </Box>
                         <Box className={classes.actionContainer} >
-                            <Box>
-                                <LikeIcon/>
-                                <span>79 claps</span>
+                            <Box onClick={showAnimation} >
+                                <Reward
+                                    ref={(ref) => { buttonRef = ref }}
+                                    type='confetti'
+                                    >
+                                        <LikeIcon/>
+                                        <span>79 claps</span>
+                                </Reward>
                             </Box>
                             <Box>
-                                <CommentIcon/>
-                                <span>2 response</span>
+                                <Reward type="memphis"
+                                    ref={ref => {commentRef = ref}}>
+                                    <CommentIcon/>
+                                    <span>2 response</span>
+                                </Reward>
                             </Box>
                             <Box className={classes.socialContainer}>
                                 <BookmarksIcon/>
