@@ -5,6 +5,7 @@ import Home from "./core/Home"
 import Login from "./auth/login"
 import CreateArticle from "./article/createArticle"
 import Snackbar from "./core/snackbar"
+import AnimatedSwitch from "./core/AnimatedSwitch"
 
 export const AlertContext = React.createContext({
     payload:{},
@@ -13,8 +14,8 @@ export const AlertContext = React.createContext({
 
 const MainRouter = () =>{
     const [alert,setAlert] = React.useState({
-        type:"success",
-        message:"Login Successful"
+        type:"",
+        message:""
     })
     const [openSnackbar,setOpenSnackbar] = React.useState(false)
     
@@ -35,12 +36,12 @@ const MainRouter = () =>{
                     <Snackbar open={openSnackbar} payload={context.payload} />
                 )}
             </AlertContext.Consumer>
-            <Switch>
-                <Route path="/login" component={Login} />
-                <PrivateRoute exact path="/article/create" component={CreateArticle} />
-                <Route path="/" component={Home} />
-                <Route component={() => <Redirect to="/" />} /> 
-            </Switch>
+            <AnimatedSwitch>
+                <Route key={1} path="/login" component={Login} />
+                <PrivateRoute key={2} exact path="/article/create" component={CreateArticle} />
+                <Route key={3} path="/" component={Home} />
+                <Route key={4} component={() => <Redirect to="/" />} /> 
+            </AnimatedSwitch>
             </AlertContext.Provider>
     )
 } 
