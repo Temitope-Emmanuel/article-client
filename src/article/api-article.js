@@ -17,3 +17,15 @@ export const getAllArticle = async (params,signal) => {
                 console.log(err)
         }
 }
+
+export const readArticle = async (params,signal) => {
+        try{
+                const response = await fetch('http://localhost:3001/api/articles',{
+                        method:'GET',
+                        signal
+                })
+                return response.json()
+        }catch(err){
+                console.log(err)
+        }
+}
