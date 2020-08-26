@@ -1,11 +1,13 @@
 import React from "react"
-import {Route,Switch,Redirect} from "react-router-dom"
+import {Route,Redirect} from "react-router-dom"
 import PrivateRoute from "./auth/PrivateRoute"
 import Home from "./core/Home"
 import Login from "./auth/login"
 import CreateArticle from "./article/createArticle"
 import Snackbar from "./core/snackbar"
 import AnimatedSwitch from "./core/AnimatedSwitch"
+import Article from "./article/Article"
+import Navbar from "./core/Navbar"
 
 export const AlertContext = React.createContext({
     payload:{},
@@ -31,16 +33,18 @@ const MainRouter = () =>{
 
     return(
         <AlertContext.Provider value={{payload:alert,handleAlert:handleSnackbar,open:openSnackbar}} >
+            <Navbar/>
             <AlertContext.Consumer>
                 {(context) => (
                     <Snackbar open={openSnackbar} payload={context.payload} />
                 )}
             </AlertContext.Consumer>
             <AnimatedSwitch>
-                <Route key={1} path="/login" component={Login} />
-                <PrivateRoute key={2} exact path="/article/create" component={CreateArticle} />
-                <Route key={3} path="/" component={Home} />
-                <Route key={4} component={() => <Redirect to="/" />} /> 
+                <Route path="/login" component={Login} />
+                <Route path="/article/:articleId" component={Article} />
+                <PrivateRoute exact path="/article/create" component={CreateArticle} />
+                <Route path="/" component={Home} />
+                <Route component={() => <Redirect to="/" />} /> 
             </AnimatedSwitch>
             </AlertContext.Provider>
     )

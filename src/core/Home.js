@@ -1,6 +1,6 @@
 import React from "react"
 import {makeStyles} from "@material-ui/core/styles"
-import {Container,Typography,Button,Box,Paper,Grid,CssBaseline} from "@material-ui/core"
+import {Typography,Button,Box,Paper,Grid,CssBaseline} from "@material-ui/core"
 import Navbar from "./Navbar"
 import Footer from "./Footer"
 import Chip from "./chip"
@@ -106,11 +106,9 @@ const Home = ({context:{handleAlert,...context},...props}) => {
       { name: 'Facebook', icon: FacebookIcon },
     ],
   };
-  console.log(article)
   return (
     <Box style={{overflowX:"hidden"}}>
         <CssBaseline/>
-        <Navbar handleMessage={handleAlert} />
       <Box className={classes.root}>
       {jwt ?
       <>

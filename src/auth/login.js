@@ -132,7 +132,7 @@ const LoginForm = ({classes,handleToggle,slide,register,handleMessage,...props})
     const [submit,setSubmit] = React.useState(true)
     const [isSubmitting,setIsSubmitting] = React.useState(false)
     const [error,setError] = React.useState("")
-
+    console.log(props)
     React.useEffect(() => {
         const isSubmit = isValid()
         setSubmit(!isSubmit)
@@ -246,7 +246,8 @@ const Login = ({open,handleToggle,handleMessage,...props}) => {
         setOptions(!options)
         handleRegister(val)
     }
- 
+
+    console.log(props)
     return (
       <Dialog 
         open={open}

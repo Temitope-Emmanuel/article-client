@@ -25,7 +25,6 @@ const CreateArticle = () => {
     }
     return(
         <>
-            <Navbar/>
             <Container className={classes.root}>
                 <Typography variant="h3" >
                     Write a New Article

@@ -72,7 +72,7 @@ const MainArticle = ({post,article=defaultValue,...props}) => {
                          </Typography>
                         {/* <Typography variant="h5" color="inherit" paragraph > */}
                             <Markdown className={classes.markdownContainer}>
-                                {defaultValue.body}
+                                {article.body}
                             </Markdown>
                         {/* </Typography> */}
                         <Link variant="subtitle1" href={`/article/${article._id}`} >

@@ -21,8 +21,8 @@ const AnimatedSwitch = ({history,location,children,...rest}) => {
 export const ContextRouteAnimation = posed.div({
     enter: {
         x: 0,
-        // opacity: 1,
-        // scale: 1,
+        opacity: 1,
+        scale: 1,
         transition: {
           type: "tween",
           ease: "easeInOut",
@@ -31,8 +31,8 @@ export const ContextRouteAnimation = posed.div({
       },
       leftSide: {
         x: "-100%",
-        // opacity: 0,
-        // scale: 1.5,
+        opacity: 0,
+        scale: 1.5,
         transition: {
           type: "tween",
           ease: "easeInOut",
@@ -41,8 +41,8 @@ export const ContextRouteAnimation = posed.div({
       },
       rightSide: {
         x: "100%",
-        // opacity: 0,
-        // scale: 1.5,
+        opacity: 0,
+        scale: 1.5,
         transition: {
           type: "tween",
           ease: "easeInOut",

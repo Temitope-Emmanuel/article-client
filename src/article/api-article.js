@@ -20,7 +20,7 @@ export const getAllArticle = async (params,signal) => {
 
 export const readArticle = async (params,signal) => {
         try{
-                const response = await fetch('http://localhost:3001/api/articles',{
+                const response = await fetch(`http://localhost:3001/api/article/${params}`,{
                         method:'GET',
                         signal
                 })

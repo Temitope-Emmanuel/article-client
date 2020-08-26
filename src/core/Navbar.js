@@ -2,22 +2,23 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import {Link,withRouter} from  "react-router-dom";
 import {Toolbar,Button,Avatar} from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import {green} from "@material-ui/core/colors"
 import Login from "../auth/login"
 import {NavImg1} from "../asset"
-import FacebookIcon from "@material-ui/icons/Facebook"
 import SearchIcon from '@material-ui/icons/Search';
 import BookmarksOutlinedIcon from '@material-ui/icons/BookmarksOutlined';
 import NotificationsOutlinedIcon from '@material-ui/icons/NotificationsOutlined';
+import FacebookIcon from "@material-ui/icons/Facebook"
 import TwitterIcon from "@material-ui/icons/Twitter"
 import InstagramIcon from "@material-ui/icons/Instagram"
 import {isAuthenticated} from "../auth/auth-helper"
 import {AlertContext} from "../MainRouter"
 import Menu from "./Menu"
 import TagsTab from "./tagsTab"
+import AlertHOC from "./Consumer"
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -163,7 +164,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const Navbar = ({handleMessage,...props}) => {
+const Navbar = ({context,...props}) => {
   const classes = useStyles();
   const [isOpen,setIsOpen] = React.useState(false)
   const [anchorEl,setAnchorEl] = React.useState(null)
@@ -176,11 +177,11 @@ const Navbar = ({handleMessage,...props}) => {
   const handleToggle = () => {
     setIsOpen(!isOpen)
   }
+  console.log(props)
   const jwt = isAuthenticated()
   const atHome = props.history.location.pathname === "/"
   return (
     <>
-    {/* <div className={classes.root}> */}
       <AppBar elevation={0} className={classes.appBar} position="static">
         <Toolbar>
           <Link to="/"
@@ -213,7 +214,7 @@ const Navbar = ({handleMessage,...props}) => {
                 <Button onClick={handleToggle} className={classes.button}>
                   Get started
                 </Button>
-                <Login handleMessage={handleMessage} open={isOpen} handleToggle={handleToggle}/>
+                <Login handleMessage={context.handleAlert} open={isOpen} handleToggle={handleToggle}/>
               </>:
               <>
               <Link to="/article/create" >
@@ -240,16 +241,8 @@ const Navbar = ({handleMessage,...props}) => {
                 Subscribe
               </Button>
               <Link>
-              <AlertContext.Consumer>
-                {(context) => (
-                  <>
-                  {/* <IconButton> */}
-                    <Menu handleAlert={context.handleAlert} handleAnchor={handleEl} anchorEl={anchorEl} />
-                    <Avatar onClick={handleEl} src={"https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"} />
-                {/* </IconButton> */}
-                </>
-                )}
-              </AlertContext.Consumer>
+                  <Menu handleAlert={context.handleAlert} handleAnchor={handleEl} anchorEl={anchorEl} />
+                  <Avatar onClick={handleEl} src={"https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60"} />
               </Link>
               </>
             }
@@ -266,4 +259,4 @@ const Navbar = ({handleMessage,...props}) => {
   );
 }
 
-export default withRouter(Navbar)
+export default withRouter(AlertHOC(Navbar))
