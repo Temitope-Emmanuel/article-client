@@ -4,8 +4,6 @@ import {Container,Typography,Button,Box,Paper,Grid,CssBaseline} from "@material-
 import Navbar from "./Navbar"
 import Footer from "./Footer"
 import Chip from "./chip"
-import Snackbar from "./snackbar"
-import {AlertContext} from "../MainRouter"
 import {isAuthenticated} from "../auth/auth-helper"
 import MainArticle from "../article/MainArticle"
 import FeaturedArticle from "../article/FeaturedArticle"
@@ -19,8 +17,8 @@ import AlertHOC from "./Consumer"
 
 const useStyles = makeStyles(theme => ({
   root:{
-    margin:theme.spacing(3,0),
-    padding:theme.spacing(1.5,0),
+    // margin:theme.spacing(3,0),
+    // padding:theme.spacing(1.5,0),
     display:"flex",
     justifyContent:"center",
     alignItems:"center",
@@ -56,18 +54,27 @@ const useStyles = makeStyles(theme => ({
 
 
 
-const Home = (props) => {
+const Home = ({context:{handleAlert,...context},...props}) => {
+  const [article,setArticle] = React.useState([])
   const classes = useStyles()
   const jwt = isAuthenticated()
-  const [article,setArticle] = React.useState([])
-
 
   React.useEffect(() => {
       const abortController = new AbortController()
       const signal = abortController.signal
-      getAllArticle({limit:5,page:1},signal).then(data => {
-          if(data && data.error){
-
+      getAllArticle({limit:5,page:1},signal).then(response => {
+          if(response && response.error){
+              handleAlert({type:"error",message:response.error})
+          }else{
+            const {docs} = response.data
+            handleAlert({type:"info",message:"New Article loaded"})
+            const newArticle = docs.map((a) => {
+              return {
+                ...a,
+                heading:a.body.split(". ",8)
+              }
+            })
+            setArticle(newArticle)
           }
       })
       return function(){
@@ -75,52 +82,7 @@ const Home = (props) => {
       }
   },[])
 
-  const mainFeaturedArticle = {
-    title:"Title of a longer blog post",
-    description:`
-    Multiple lines of text that form the lede, informing new readers
-     quickly and efficiently about what's most interesting in this post content
-    `,
-    image:"https://source.unsplash.com/random",
-    imgText:"main image Description",
-    linkText:"Continue reading..."
-  }
-
-  const featuredArticle = [
-    {
-      title:"Featured Post",
-      date:"Nov 12",
-      description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-        image: 'https://source.unsplash.com/random',
-        imageText: 'Image Text',
-      },
-      {
-        title: 'Post title',
-        date: 'Nov 11',
-        description:
-          'This is a wider card with supporting text below as a natural lead-in to additional content.',
-        image: 'https://source.unsplash.com/random',
-        imageText: 'Image Text',
-      },
-    {
-      title:"Featured Post",
-      date:"Nov 12",
-      description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-        image: 'https://source.unsplash.com/random',
-        imageText: 'Image Text',
-      },
-      {
-        title: 'Post title',
-        date: 'Nov 11',
-        description:
-          'This is a wider card with supporting text below as a natural lead-in to additional content.',
-        image: 'https://source.unsplash.com/random',
-        imageText: 'Image Text',
-      }
-  ]
-
+  
   const sidebar = {
     title: 'About',
     description:
@@ -144,20 +106,21 @@ const Home = (props) => {
       { name: 'Facebook', icon: FacebookIcon },
     ],
   };
-    
+  console.log(article)
   return (
     <Box style={{overflowX:"hidden"}}>
         <CssBaseline/>
-        <Navbar handleMessage={props.context.handleAlert} />
-        <Snackbar open={props.context.open} payload={props.context.payload} />
+        <Navbar handleMessage={handleAlert} />
       <Box className={classes.root}>
       {jwt ?
       <>
-        <MainArticle post={mainFeaturedArticle} />
+        <MainArticle article={article[0]} />
         <Grid container spacing={4} >
-          {featuredArticle.map(post => (
-            <FeaturedArticle key={post.title} post={post} />
-          ))}
+          {article.map((article,idx) => {
+            return(
+              <FeaturedArticle key={idx} article={article} />
+            )
+          })}
         </Grid>
         <Grid container spacing={5} className={classes.mainGrid}>
           <Grid item xs={12} md={8} >

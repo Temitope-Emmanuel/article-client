@@ -59,7 +59,7 @@ const Footer = () => {
         <Box className={classes.root}>
             <Container className={classes.container}>
                     <Box className={classes.imageContainer}>
-                        <img style={{width:"100%"}} src={NavImg2} />
+                        <img alt="footer" style={{width:"100%"}} src={NavImg2} />
                     </Box>
                 <Box style={{width:"60%"}}>
                     <Box className={classes.startContainer}>

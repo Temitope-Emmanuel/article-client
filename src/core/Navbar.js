@@ -177,8 +177,7 @@ const Navbar = ({handleMessage,...props}) => {
     setIsOpen(!isOpen)
   }
   const jwt = isAuthenticated()
-  const atHome = props.history.location.pathname == "/"
-  console.log(props,atHome)
+  const atHome = props.history.location.pathname === "/"
   return (
     <>
     {/* <div className={classes.root}> */}

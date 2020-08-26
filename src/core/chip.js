@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import {Paper,Box} from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,25 +64,25 @@ const ChipComponent = ({category,...props}) => {
 
   return (
     <>
-      <Chip className={`${classes.chip} ${category == "Education" && classes.active}`} 
+      <Chip className={`${classes.chip} ${category === "Education" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="Education" onClick={handleClick("Education")} />
-      <Chip className={`${classes.chip} ${category == "Science" && classes.active}`} 
+      <Chip className={`${classes.chip} ${category === "Science" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="Science" onClick={handleClick("Science")} />
-      <Chip className={`${classes.chip} ${category == "Relationships" && classes.active}`} 
+      <Chip className={`${classes.chip} ${category === "Relationships" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="Relationships" onClick={handleClick("Relationships")} />
-      <Chip className={`${classes.chip} ${category == "GEN" && classes.active}`} 
+      <Chip className={`${classes.chip} ${category === "GEN" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="GEN" onClick={handleClick("GEN")} />
-      <Chip className={`${classes.chip} ${category == "Business" && classes.active}`} 
+      <Chip className={`${classes.chip} ${category === "Business" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="Business" onClick={handleClick("Business")} />
-      <Chip className={`${classes.chip} ${category == "Technology" && classes.active}`} 
+      <Chip className={`${classes.chip} ${category === "Technology" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="Technology" onClick={handleClick("Technology")} />
-      <Chip className={`${classes.chip} ${category == "Food" && classes.active}`} 
+      <Chip className={`${classes.chip} ${category === "Food" && classes.active}`} 
       avatar={<Avatar className={classes.avatar} >#</Avatar>}
        label="Food" onClick={handleClick("Food")} />
     </>
