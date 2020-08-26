@@ -249,7 +249,7 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
                                         <span>79 claps</span>
                                 </Reward>
                             </Box>
-                            <Box>
+                            <Box onClick={commentAnimation} >
                                 <Reward type="memphis"
                                     ref={ref => {commentRef = ref}}>
                                     <CommentIcon/>
