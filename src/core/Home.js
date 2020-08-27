@@ -13,7 +13,8 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import {getAllArticle} from "../article/api-article"
 import AlertHOC from "./Consumer"
-
+import Wrapper from "./Wrapper"
+import Snackbar from "./snackbar"
 
 const useStyles = makeStyles(theme => ({
   root:{
@@ -49,6 +50,12 @@ const useStyles = makeStyles(theme => ({
   },
   mainGrid:{
     marginTop:theme.spacing(3)
+  },
+  articleContainer:{
+    display:"grid",
+    gridGap:"3em",
+    width:"90vw",
+    gridTemplateColumns:"repeat( auto-fit, minmax(250px, 30%))"
   }
 }))
 
@@ -107,19 +114,22 @@ const Home = ({context:{handleAlert,...context},...props}) => {
     ],
   };
   return (
+    <>
+    <Navbar/>
+    <Snackbar open={context.open} payload={context.payload} />        
     <Box style={{overflowX:"hidden"}}>
         <CssBaseline/>
       <Box className={classes.root}>
       {jwt ?
       <>
         <MainArticle article={article[0]} />
-        <Grid container spacing={4} >
+        <Box className={classes.articleContainer} >
           {article.map((article,idx) => {
             return(
               <FeaturedArticle key={idx} article={article} />
             )
           })}
-        </Grid>
+        </Box>
         <Grid container spacing={5} className={classes.mainGrid}>
           <Grid item xs={12} md={8} >
             Feateured 
@@ -150,7 +160,8 @@ const Home = ({context:{handleAlert,...context},...props}) => {
       </Box>
       <Footer/>
     </Box>
+    </>
   )
 }
 
-export default AlertHOC(Home)
+export default Wrapper(AlertHOC(Home))

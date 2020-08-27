@@ -14,6 +14,10 @@ import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import Markdown from "../config/Markdown"
 import Chip from "../core/chip"
 import Reward from "react-rewards"
+import Wrapper from "../core/Wrapper"
+import Navbar from "../core/Navbar"
+import {AlertContext} from "../MainRouter"
+import Snackbar from "../core/snackbar"
 
 const useStyles = makeStyles(theme => ({
     root:{
@@ -191,7 +195,7 @@ const useStyles = makeStyles(theme => ({
                 marginBottom:"5px"
             },
             "& span:nth-child(2)":{
-                fontSize:"1.5em",
+                fontSize:"1.3em",
                 fontWeight:"600",
                 marginBottom:"15px"
             },
@@ -242,6 +246,14 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
     },[articleId])
     const description = `A Software Engineer turned writer. Udacity Full-stack Nanodegree Grad. Contributor to The Startup, Level Up Coding & Codeburst.io.`
     return(
+        <>
+        <Navbar/>
+            <AlertContext.Consumer>
+                {(context) => (
+                    <Snackbar open={context.open} payload={context.payload} />
+                )}
+            </AlertContext.Consumer>
+            
         <Box className={classes.root}>
             <Container >
                 <Typography variant="h2" >
@@ -316,7 +328,7 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
                     </Box>
                     <Box className={classes.userContainer}>
                         <Box className={classes.userHolder} >
-                            <Avatar variant="squared" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60" />
+                            <Avatar variant="square" src="https://images.unsplash.com/photo-1544723795-3fb6469f5b39?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=400&q=60" />
                             <Box>
                                 <span>WRITTEN BY</span>
                                 <span>{article.author.username}</span>
@@ -331,8 +343,9 @@ const Article = ({context,match:{params:{articleId}},...props}) => {
                 }
             </Container>
         </Box>
+        </>
     )
 }
 
 
-export default AlertHOC(Article)
+export default Wrapper(AlertHOC(Article))

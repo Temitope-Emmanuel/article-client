@@ -1,6 +1,6 @@
 export default (method,url,payload,token,format = false ) => {
     console.log("calling the api",payload,format)
-    return fetch(`http://localhost:3001/api/${url}`,{
+    return fetch(`http://article-server.herokuapp.com/api/${url}`,{
         method:method.toUpperCase(),
         headers:{
             'Accept':'application/json',

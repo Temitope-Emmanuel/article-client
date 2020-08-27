@@ -1,66 +1,65 @@
-import React from "react"
-import PropTypes from "prop-types"
-import {makeStyles} from "@material-ui/core/styles"
-import Markdown from "markdown-to-jsx"
-import {
-    Typography,Grid,Card,
-    CardActionArea,CardContent,
-    CardMedia,Hidden} from "@material-ui/core"
-
-
-const useStyles = makeStyles(theme => ({
-    card:{
-        display:'flex'
-    },
-    cardDetails:{
-        flex:1
-    },
-    CardMedia:{
-        width:160
-    }
-}))
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import {Link} from "react-router-dom"
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Markdown from "../config/Markdown"
+import {deepPurple} from "@material-ui/core/colors"
+const useStyles = makeStyles({
+  root: {
+    maxWidth: 345,
+  },
+  root:{
+    borderRadius: "13px",
+    background: deepPurple[100],
+    boxShadow:  `-35px -35px 70px #987d9f, 
+                 35px 35px 70px #ffffff`
+  },
+  media: {
+    height: 200,
+  },
+});
 
 const FeaturedArticle = ({article,...props}) => {
-    const classes = useStyles()
-    return(
-        <Grid item xs={12} lg={3} md={4} >
-            <CardActionArea component="a" href={`/article/${article._id}`} >
-                <Card className={classes.card} >
-                    <div className={classes.cardDetails}>
-                        <CardContent>
-                            <Typography component="h2" variant="h5" >
-                                {article.title}
-                            </Typography>
-                            {/* <Typography variant="subtitle1" color="textSecondary">
-                                {article.date.toLocaleString()}
-                            </Typography> */}
-                            <Typography variant="subtitle1" paragraph >
-                                <Markdown>
-                                {article.heading[2]}
-                                </Markdown>
-                            </Typography>
-                            <Typography variant="subtitle1" paragraph >
-                                <Markdown>
-                                {article.heading[3]}
-                                </Markdown>
-                            </Typography>
-                            <Typography variant="subtitle1" color="primary" >
-                                Continue Reading...
-                            </Typography>
-                        </CardContent>
-                    </div>
-                    <Hidden xsDown >
-                        <CardMedia className={classes.CardMedia}
-                         title={article.heading[1]} image={article.imageLink} />
-                    </Hidden>
-                </Card>               
-            </CardActionArea>
-        </Grid>
-    )
+  const classes = useStyles();
+
+  return (
+    <Card className={classes.root}>
+      <CardActionArea>
+        <CardMedia
+          className={classes.media}
+          image={article.imageLink  || "" }
+          title="Contemplative Reptile"
+        />
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="h2">
+            {article.title}
+          </Typography>
+          <Typography variant="body2" color="textSecondary" component="p">
+            <Markdown>
+                {article.heading[1]}
+            </Markdown>
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+      <CardActions>
+        <Button color="primary">
+          Share
+        </Button>
+        <Button color="primary">
+            <Link to={`/article/${article._id}`} >
+                Learn More
+            </Link>
+        </Button>
+      </CardActions>
+    </Card>
+  );
 }
 
-// FeaturedArticle.PropTypes = {
-//     article:PropTypes.arr.isRequired
-// }
 
 export default FeaturedArticle

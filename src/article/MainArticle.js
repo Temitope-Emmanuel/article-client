@@ -46,7 +46,7 @@ const defaultValue = {
     // imageLink:"https://source.unsplash.com/random",
     title:"A new Beginning",
     _id:"23y606248682346823489",
-    body:`  
+    heading:`  
     - Building UIs should be simpler, it still too slow and complex.
     Designers and developers should benefit from a more integrated experience.
     - Every now and then, we witness the appearance of a new React UI component library built from scratch ([UXPin](https://adele.uxpin.com/) keeps track of some of them).
@@ -72,7 +72,7 @@ const MainArticle = ({post,article=defaultValue,...props}) => {
                          </Typography>
                         {/* <Typography variant="h5" color="inherit" paragraph > */}
                             <Markdown className={classes.markdownContainer}>
-                                {article.body}
+                                {article.heading[3] || article.heading}
                             </Markdown>
                         {/* </Typography> */}
                         <Link variant="subtitle1" href={`/article/${article._id}`} >

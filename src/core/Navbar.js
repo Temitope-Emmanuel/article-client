@@ -19,8 +19,6 @@ import Menu from "./Menu"
 import TagsTab from "./tagsTab"
 import AlertHOC from "./Consumer"
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -177,7 +175,6 @@ const Navbar = ({context,...props}) => {
   const handleToggle = () => {
     setIsOpen(!isOpen)
   }
-  console.log(props)
   const jwt = isAuthenticated()
   const atHome = props.history.location.pathname === "/"
   return (

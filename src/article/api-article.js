@@ -7,7 +7,7 @@ export const createArticle = (payload,user,format) => {
 
 export const getAllArticle = async (params,signal) => {
         try{
-                const response = await fetch('http://localhost:3001/api/articles',{
+                const response = await fetch('https://article-server.herokuapp.com/api/articles',{
                         method:"POST",
                         signal,
                         body:JSON.stringify(params)
@@ -20,7 +20,7 @@ export const getAllArticle = async (params,signal) => {
 
 export const readArticle = async (params,signal) => {
         try{
-                const response = await fetch(`http://localhost:3001/api/article/${params}`,{
+                const response = await fetch(`https://article-server.herokuapp.com/api/article/${params}`,{
                         method:'GET',
                         signal
                 })

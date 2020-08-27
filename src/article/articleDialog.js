@@ -199,7 +199,6 @@ const ArticleDialog = ({open,handleToggle,context,article,handleAlert,...props})
     const value = e.target.files[0]
     setImageInput(value) 
   }
-  console.log(handleAlert)
   const handleSubmit = () => {
     setSubmitting(true)
     const articleData = new FormData();

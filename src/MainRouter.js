@@ -33,16 +33,10 @@ const MainRouter = () =>{
 
     return(
         <AlertContext.Provider value={{payload:alert,handleAlert:handleSnackbar,open:openSnackbar}} >
-            <Navbar/>
-            <AlertContext.Consumer>
-                {(context) => (
-                    <Snackbar open={openSnackbar} payload={context.payload} />
-                )}
-            </AlertContext.Consumer>
             <AnimatedSwitch>
-                <Route path="/login" component={Login} />
-                <Route path="/article/:articleId" component={Article} />
+                {/* <Route path="/login" component={Login} /> */}
                 <PrivateRoute exact path="/article/create" component={CreateArticle} />
+                <Route path="/article/:articleId" component={Article} />
                 <Route path="/" component={Home} />
                 <Route component={() => <Redirect to="/" />} /> 
             </AnimatedSwitch>
